@@ -22,23 +22,7 @@ body {
     padding: 8px 16px;
     font-size: 16px;
     cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    background-color: #555;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    text-align: left;
-}
-
-.title {
-    color: white;
-    margin-right: 12em;
+    margin-bottom: 20px; /* Dodany większy odstęp */
 }
 
 .user-item {
@@ -46,22 +30,56 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 8px;
-    background-color: white;
-    border-radius: 15px;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    background-color: white; /* Dodane białe tło */
+    border-radius: 15px; /* Dodane zaokrąglenie */
+}
+
+/* Dodatkowe style dla linii tytułów kolumn */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background-color: #555; /* Kolor tła */
+    border-radius: 15px; /* Zaokrąglenie */
+    margin-bottom: 10px; /* Dodany odstęp */
+}
+
+.title {
+    flex: 1;
+    color: white; /* Kolor tekstu */
+}
+
+/* Dodatkowe style dla użytkowników */
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background-color: white; /* Białe tło */
+    border-radius: 15px; /* Zaokrąglenie */
+    margin-bottom: 10px; /* Dodany odstęp */
 }
 
 .user-info {
     flex: 1;
-    color: #555;
+    color: #555; /* Szary kolor tekstu */
 }
 
+.editButton,
+.deleteButton,
 .eye-icon {
-    color: transparent;
-    width: 24px;
-    text-align: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 8px;
+    color: #555; /* Szary kolor */
 }
 
+.editButton:hover,
+.deleteButton:hover,
 .eye-icon:hover {
     color: red;
 }
