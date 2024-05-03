@@ -1,0 +1,234 @@
+.container-dash {
+    width: auto;
+    height: 100vh;
+    background: linear-gradient(180deg, #000000 0%, #000000 40%, #727272 100%);
+}
+
+.page-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    color: white;
+    font-size: 40px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.nav-text{
+    padding: 1vw 1vh;
+    color:white;
+    font-size: 25px;
+    text-align: center;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+li {
+    margin-right: 3em;
+}
+
+.img-log {
+    max-width: 200vw;
+}
+
+.button {
+    font-size: 25px;
+    text-decoration: none;
+    color: white;
+    width: 20vw;
+    height: 10vh;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    color: rgb(161, 161, 161);
+}
+
+.fa-circle-user {
+    font-size: 80px;
+}
+
+.bell-btn {
+    font-size: 40px; /* Dostosuj rozmiar ikony dzwonka według preferencji */
+    margin-top: 1em; /* Dodaj margines na górę przycisku dzwonka */
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 5vw; /* Delikatnie odsunięcie przycisków od lewej krawędzi */
+    margin-right: 5vw;
+}
+
+.warning-button,.critical-button {
+    margin: 0.5em 0;
+    width: 12vw;
+    height: 10vh;
+    background: #a5a1a1;
+    box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.count{
+    font-size: 50px;
+}
+.critical-button i {
+    font-size: 1.5em;
+    color: #DB303F; /* Kolor ikony na czerwony */
+}
+.warning-button i {
+    font-size: 1.5em;
+    color: #F68D2B; /* Kolor ikony na czerwony */
+}
+
+main {
+    margin-top: 5em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
+.center{
+    display: flex;
+    width: 90%;
+    align-items: center;
+}
+
+.charts {
+    display: flex;
+    flex-grow: 1; /* Wykresy zajmują pozostałe miejsce */
+    justify-content: space-between; /* Rozstawienie wykresów równomiernie */
+    margin-left: 8em;
+}
+
+.chart-container1 {
+    position: relative;
+    height: 35vh;
+    width: 40%; /* Szerokość wykresów */
+}
+.chart-container2 {
+    position: relative;
+    height: 35vh;
+    width: 40%; /* Szerokość wykresów */
+}
+
+#line-chart-container {
+    margin: 0 auto; /* Wcentrowanie poziome */
+    width: 90%; /* Szerokość 90% ekranu */
+    border-radius: 15px; /* Zaokrąglone krawędzie */
+    overflow: hidden; /* Ukryj elementy, które mogą wystawać poza kontener */
+    box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.linear{
+    margin-top: 5vh;
+}
+.topnav{
+    display: none;
+}
+
+#firstChart {
+    display: none;
+}
+@media only screen and (max-device-width: 430px) {
+
+    ul{
+        display: none;
+    }
+    .img-log{
+        margin: 0;
+        height: 6.5vh;
+    }
+    .top-nav{
+        padding: 0.3em;
+        align-items: normal;
+    }
+    .nav-text{
+        display: none;
+    }
+    body{
+        font-size: 36px;
+    }
+
+    button{
+        margin: 0;
+        line-height: normal;
+    }
+    .buttons{
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .warning-button{
+        width: 40vw;
+    }
+
+    .critical-button{
+        width: 40vw;
+    }
+
+    .fa-circle-user {
+        font-size: 60px;
+    }
+
+    main{
+        margin: 0;
+    }
+    .charts{
+        margin: 0;
+    }
+    .chart-container1 {
+        position: relative;
+        width: 80vw; 
+    }
+    .chart-container2 {
+        display: none;
+    }
+
+    .center{
+        width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .page-title{
+        height: 5vh;
+    }
+
+    .linear{
+        margin-top: 3vh;
+    }
+
+    #line-chart-container{
+        height: 32vh;
+        font-size: small;
+    }
+}

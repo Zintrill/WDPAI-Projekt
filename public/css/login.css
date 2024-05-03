@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+}
+
+.container-login {
+    background-image: url('../img/jakosc.png');
+    height: 100vh;
+    background-position: center;
+    background-size: cover;  
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    background: rgba(38, 38, 37, 0.5);
+    border-radius: 15px;
+    max-width: 50%;
+    margin-top: 5vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    padding: 2em;
+}
+
+input {
+    background-color: rgba(121, 121, 121, 0.4);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    width: 80%;
+    border: none;
+    margin: 0.7em 1em; /* zmienione na pojedyncze wystąpienie margin */
+    line-height: 2.5em;
+    border-radius: 15px;
+    color: white;
+    letter-spacing: 1px; /* Dodane jednostki dla letter-spacing */
+}
+
+input::placeholder {
+    text-align: center;
+    justify-content: center;
+    color: white;
+}
+
+.button-login {
+    background: black;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    border: none;
+    color: white;
+    margin-top: 1.5em;
+    line-height: 2.5em;
+    border-radius: 15px;
+    letter-spacing: 1px; /* Dodane jednostki dla letter-spacing */
+}
+
+.link-register {
+    color: white;
+    text-decoration: underline;
+}
+
+.register-text {
+    color: white;
+    text-align: center;
+}
+
+.register-button {
+    display: none;
+}
+
+@media only screen and (max-device-width: 430px) {
+    .container-login {
+        background: linear-gradient(180deg, #000000 0%, #000000 30%, #727272 100%);
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .box {
+        background: none; 
+        box-shadow: none;
+        max-width: none;
+        width: 100%;
+        margin-top: 16vh;
+    }
+
+    input, button {
+        font-size: 40px;
+        border-radius: 40px;
+        line-height: 3.5em;
+        margin: 1em;
+        letter-spacing: 3px;
+    }
+
+    form {
+        padding: 0em;
+    }
+
+    .button-login{
+        margin-top: 1em;
+        line-height: 3em;
+        border-radius: 40px;
+    }
+    .register-button {
+        display: block;
+        background: white;
+        color: black;
+        border: none;
+        margin-top: 1em;
+        line-height: 3em;
+        border-radius: 40px;
+        width: 80%; 
+        font-weight: bold;
+        letter-spacing: 3px;
+        margin-top: 3em
+    }
+
+    .register-text {
+        display: none;
+    }
+
+    img {
+        height: 11vh;
+        margin-bottom: 20em;
+    }
+}
