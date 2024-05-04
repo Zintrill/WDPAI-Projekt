@@ -1,6 +1,7 @@
 body {
     width: auto;
     height: 100vh;
+    font-family: Arial;
     background: linear-gradient(180deg, #000000 0%, #000000 40%, #727272 100%);
     margin: 0%;
 }
@@ -156,6 +157,7 @@ button {
     }
     .hamburger {
         display: block;
+        margin-left: 0.3em;
     }
 
     .page-title{
@@ -191,8 +193,9 @@ button {
         position: absolute;
         top: 15vh;
         width: auto;
-        padding: 0.2em;
+        padding: 0.5em;
         border-radius: 15px;
+        background-color: black;
     }
 
     .nav-menu .nav-link {

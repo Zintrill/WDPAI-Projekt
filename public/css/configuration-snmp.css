@@ -42,8 +42,9 @@
     border-radius: 15px; /* Zaokrąglenie */
     margin-bottom: 10px; /* Dodany odstęp */
     margin-bottom: 1.5em;
-    padding-right: 12.5em;
+    padding-right: 5em;
     font-weight: bold;
+    color: white;
 }
 
 .device, .device-phone {
@@ -80,26 +81,41 @@
 .title,
 .device-info-phone,
 .device-inf {
-width: 10em;
+width: 14vw;
 }
 
 
 @media only screen and (max-width: 820px) {
     
-    .container-users {
+    .container-snmp-devices {
         width: 90%; /* Szerokość kontenera dostosowana do mniejszych ekranów */
         font-size: small;
     }
 
+    .device-info-phone, .title-phone{
+        display: none;
+    }
     .action-button {
         padding: 12px 24px; /* Zwiększona wielkość przycisku */
         font-size: 20px; /* Zmniejszona wielkość tekstu przycisku */
     }
-    .user-info-phone, .title-phone{
-        display: none;
+    .title-phone,
+    .title,
+    .device-info-phone,
+    .device-info {
+        width: auto; /* Ustawienie szerokości na automatyczną dla wersji mobilnej */
+        text-align: center; /* Wyśrodkowanie tekstu */
+        word-wrap: break-word; /* Dodanie wrapa dla długiego tekstu */
     }
-    .table-header{
-        padding-right: 6em;
-        height: 2em;
+
+    .device-info-phone,
+    .device-info {
+            flex: 1; /* Ustawienie flex na 1, aby kolumny zajmowały dostępne miejsce */
+            
+    }
+
+    .table-header
+    {
+        padding-right: 8em;
     }
 }

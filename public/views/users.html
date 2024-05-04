@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Users</title>
     <link rel="stylesheet" type="text/css" href="../css/background.css">
-    <link rel="stylesheet" type="text/css" href="../css/testy.css">
+    <link rel="stylesheet" type="text/css" href="../css/users.css">
     <script src="https://kit.fontawesome.com/bb4f511674.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -41,26 +41,25 @@
         <script src="../js/options.js"></script>
     </div>
 
-    <div class="container">
+    <div class="container-users">
         <div class="user-management">
             
-            <button id="addUserButton" class="action-button">Add User</button>
+            <button id="addUserButton" class="action-button"><i class="fa-solid fa-user-plus"></i> ADD USER</button>
             <div class="table-header">
-                <span class="title">Full Name</span>
+                <span class="title-phone">Full Name</span>
                 <span class="title">Username</span>
-                <span class="title">Password <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
+                <span class="title-phone">Password</span>
                 <span class="title">Role</span>
             </div>
             <div id="userList">
                 <div class="user-item">
-                    <span class="user-info">John Doe</span>
+                    <span class="user-info-phone">John Doe</span>
                     <span class="user-info">johndoe</span>
-                    <span class="user-info">******** <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
+                    <span class="user-info-phone">******** <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
                     <span class="user-info">Administrator</span>
                     <button class="editButton"><i class="fa-solid fa-pencil"></i></button>
                     <button class="deleteButton"><i class="fa-solid fa-trash"></i></button>
                 </div>
-                <!-- Dodaj więcej użytkowników w takim samym formacie -->
             </div>
         </div>
     </div>
