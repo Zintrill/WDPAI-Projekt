@@ -1,73 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNMP Configuration</title>
+    <title>USERS</title>
     <link rel="stylesheet" type="text/css" href="../css/background.css">
-    <link rel="stylesheet" type="text/css" href="../css/testy.css">
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/bb4f511674.js" crossorigin="anonymous"></script>
+    
 </head>
 <body>
-    <div class="container-dash">
-        <nav class="top-nav">
-            <img class="img-log" src="../img/logo.svg">
-            <ul class="nav-menu">
-                <li><a href="dashboard.html" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
-                <li><a href="snmp.html" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
-                <li><a href="configuration.html" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
-                <li><a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
-            </ul>
-            <span class="nav-text">name</span>
-            
-            <nav class="user-options">
-                <div class="options">
-                    <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
-                    <ul class="options-menu" id="optionsMenu">
-                        <li><a href="#" class="option-button"><i class="fa-solid fa-gear"></i>Options</a></li>
-                        <li><a href="#" class="option-button"><i class="fa-solid fa-question"></i>About</a></li>
-                        <li><a href="login.html" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
-                    </ul>
-                </div>
-            </nav>
+<div class="container-dash">
+    <nav class="top-nav">
+        <img class="img-log" src="../img/logo.svg">
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
+            <li><a href="snmp.html" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
+            <li><a href="configuration.html" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
+            <li><a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
+        </ul>
+        <span class="nav-text">name</span>
+        <nav class="user-options">
+            <div class="options">
+                <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
+                <ul class="options-menu" id="optionsMenu">
+                    <li><a href="#" class="option-button"><i class="fa-solid fa-gear"></i>Options</a></li>
+                    <li><a href="#" class="option-button"><i class="fa-solid fa-question"></i>About</a></li>
+                    <li><a href="login.html" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
+                </ul>
+            </div>
         </nav>
-        <div class="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-        <div class="page-title"><h1>SNMP Configuration</h1></div>
-        <script src="../js/menu.js"></script>
-        <script src="../js/options.js"></script>
+    </nav>
+    <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
     </div>
-
-    <div class="container-snmp-devices">
-        <div class="snmp-management">
-            
-            <button id="addDeviceButton" class="action-button"><i class="fa-solid fa-circle-plus"></i> ADD DEVICE</button>
-            <div class="table-header">
-                <span class="title">Device Name</span>
-                <span class="title-phone">Type</span>
-                <span class="title">Address IP</span>
-                <span class="title">SNMP Version</span>
-                <span class="title">User Name</span>
-                <span class="title">Password</span>
-                <span class="title">Description</span>
+    <div class="page-title"><h1>Dashboard</h1></div>
+        <div class="container-main">
+            <div class="alerts-buttons">
+                <button class="button warning-button">
+                    <div><i class="fa-solid fa-exclamation-triangle"></i> <span class="count">10</span></div>
+                    <div>Warnings</div>
+                </button>
+                <button class="button critical-button">
+                    <div><i class="fa-solid fa-exclamation-triangle"></i> <span class="count">5</span></div>
+                    <div>Critical</div>
+                </button>
             </div>
-            <div id="DeviceList">
-                <div class="device-item">
-                    <span class="device-info">SW02-Test</span>
-                    <span class="device-info">Switch</span>
-                    <span class="device-info">192.168.101.1</span>
-                    <span class="device-info">SNMP V1</span>
-                    <span class="device-info">SNMP controler</span>
-                    <span class="device-info-phone">******** <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
-                    <span class="device-info">Biuro w hotrelu</span>
-                    <button class="editButton"><i class="fa-solid fa-pencil"></i></button>
-                    <button class="deleteButton"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </div>
+        <div class="donuts">
+            <canvas id="donutChart1" width="400" height="400"></canvas>
+            <canvas id="donutChart2" width="400" height="400"></canvas>
         </div>
     </div>
+    <script src="../js/chart.js"></script>
+    <script src="../js/menu.js"></script>
+    <script src="../js/options.js"></script>
 </body>
 </html>
