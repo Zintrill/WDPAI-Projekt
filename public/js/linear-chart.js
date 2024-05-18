@@ -1,80 +1,115 @@
-FusionCharts.ready(function() {
-    var stockQuantityChart = new FusionCharts({
-        id: "stockRealTimeChart",
-        type: 'realtimeLine',
-        renderAt: 'line-chart-container',
-        width: '100%',
-        dataFormat: 'json',
-        "dataSource": {
-            "chart": {
-                "theme": "fusion",
-                "bgColor": "#a5a1a1",
-                "refreshinterval": "5",
-                "yaxisminvalue": "0",
-                "yaxismaxvalue": "100",
-                "numdisplaysets": "10",
-                "labeldisplay": "rotate",
-                "rotateLabels": "1",
-                "slantLabels": "1",
-                "showRealTimeValue": "0",
-                "xAxisNameFontBold": "1",
-                "yAxisNameFontBold": "1",
-                "legendItemFontBold": "1",
-                "legendItemFontSize": "15", // Rozmiar tekstu w legendzie
-                "legendItemFontColor": "#000000", // Kolor tekstu w legendzie (czarny)
-                "baseFontColor": "#000000", // Kolor tekstu (czarny)
-                "baseFontBold": "10", // Pogrubienie tekstu
-                "baseFontSize": "20", // Rozmiar tekstu
-                "plotFillAlpha": "100"
-            },
-            "categories": [{
-                "category": []
-            }],
-            "dataset": [{
-                "seriesname": "Online",
-                "color": "#6EBE01",
-                "anchorRadius": "0",
-                "data": []
-            }, {
-                "seriesname": "Offline",
-                "color": "#DB303F",
-                "anchorRadius": "0",
-                "data": []
-            }, {
-                "seriesname": "Waiting",
-                "color": "#F68D2B",
-                "anchorRadius": "0",
-                "data": []
-            }]
+// Tworzymy początkowe dane
+let LineData = {
+    labels: [],
+    datasets: [
+        {
+            label: 'Online',
+            borderColor: '#7FC008',
+            backgroundColor: '#7FC008',
+            data: [],
         },
-        
-        "events": {
-            "initialized": function(e) {
-                var chartRef = FusionCharts("stockRealTimeChart");
+        {
+            label: 'Offline',
+            borderColor: '#DB303F',
+            backgroundColor: '#DB303F',
+            data: [],
+        },
+        {
+            label: 'Waiting',
+            backgroundColor: '#F68D2B',
+            borderColor: '#F68D2B',
+            data: [],
+        }
+    ]
+};
 
-                function addLeadingZero(num) {
-                    return (num <= 9) ? ("0" + num) : num;
+// Określamy szerokość i wysokość elementu canvas
+const canvasWidth = '100%'; // Nowa szerokość
+const canvasHeight = '300'; // Nowa wysokość
+
+// Tworzymy element canvas i nadajemy mu właściwości szerokości i wysokości
+let canvas = document.getElementById('myChart');
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+// Tworzymy wykres na podstawie danych
+let ctx = canvas.getContext('2d');
+// Tworzymy wykres na podstawie danych
+let myChart = new Chart(ctx, {
+    type: 'line',
+    data: LineData,
+    options: {
+        animation: {
+            duration: 0, // Wyłączamy animację
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'black', // Kolor tekstu etykiet osi czasu
+                    font: {
+                        size: "15px",
+                        weight: 'bold' // Pogrubiamy tekst etykiet osi czasu
+                    } 
                 }
-
-                function updateData() {
-                    var currDate = new Date();
-                    var label = addLeadingZero(currDate.getHours()) + ":" +
-                        addLeadingZero(currDate.getMinutes()) + ":" +
-                        addLeadingZero(currDate.getSeconds());
-
-                    var onlineValue = Math.floor(Math.random() * 100);
-                    var offlineValue = Math.floor(Math.random() * 100);
-                    var waitingValue = Math.floor(Math.random() * 100);
-
-                    var strData = "&label=" + label +
-                        "&value=" + onlineValue + "|" + offlineValue + "|" + waitingValue;
-                    chartRef.feedData(strData);
+            },
+            y: {
+                ticks: {
+                    color: 'black',// Kolor tekstu etykiet osi Y
+                    font: {
+                        size: "15px",
+                        weight: 'bold' // Pogrubiamy tekst etykiet osi czasu
+                    } 
                 }
-
-                var myVar = setInterval(function() {
-                    updateData();
-                }, 5000);
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'bottom', // Umieszczamy legendę pod wykresem
+                labels: {
+                    font: {
+                        size: 15, // Zwiększenie czcionki legendy
+                    },
+                    usePointStyle: true, // Użycie kółek zamiast prostokątów w legendzie
+                }
             }
         }
-    }).render();
+    }
 });
+// Funkcja generująca losową liczbę całkowitą z zakresu min do max
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// Funkcja dodająca nowe dane do wykresu
+function addData(label, time) {
+    let randomOnline = randomInt(10, 100);
+    let randomOffline = randomInt(5, 50);
+    let randomWaiting = randomInt(1, 20);
+    
+    // Dodajemy nowe dane
+    myChart.data.labels.push(time);
+    myChart.data.datasets[0].data.push(randomOnline);
+    myChart.data.datasets[1].data.push(randomOffline);
+    myChart.data.datasets[2].data.push(randomWaiting);
+
+    // Usuwamy starsze dane
+    if (myChart.data.labels.length > 10) {
+        myChart.data.labels.shift();
+        myChart.data.datasets.forEach((dataset) => {
+            dataset.data.shift();
+        });
+    }
+
+    // Aktualizujemy wykres
+    myChart.update();
+}
+
+// Funkcja symulująca generowanie danych co 5 sekund
+function generateData() {
+    let currentTime = new Date().toLocaleTimeString();
+    addData('Online', currentTime);
+    setTimeout(generateData, 5000);
+}
+
+// Uruchamiamy generowanie danych
+generateData();

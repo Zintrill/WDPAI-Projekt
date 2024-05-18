@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>USERS</title>
+    <title>DASHBOARD</title>
     <link rel="stylesheet" type="text/css" href="../css/background.css">
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-streaming/2.0.0/chartjs-plugin-streaming.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/bb4f511674.js" crossorigin="anonymous"></script>
+    
 </head>
 <body>
 <div class="container-dash">
@@ -17,7 +21,6 @@
             <li><a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
         </ul>
         <span class="nav-text">name</span>
-        
         <nav class="user-options">
             <div class="options">
                 <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
@@ -35,8 +38,33 @@
         <span class="bar"></span>
     </div>
     <div class="page-title"><h1>Dashboard</h1></div>
+        <div class="container-main">
+            <div class="alerts-buttons">
+                <button class="button warning-button">
+                    <div><i class="fa-solid fa-exclamation-triangle"></i> <span class="count">10</span></div>
+                    <div>Warnings</div>
+                </button>
+                <button class="button critical-button">
+                    <div><i class="fa-solid fa-exclamation-triangle"></i> <span class="count">5</span></div>
+                    <div>Critical</div>
+                </button>
+            </div>
+        <div class="donuts">
+            <div class="chart1">
+            <canvas id="donutChart1" width="400" height="400"></canvas>
+            </div>
+            <div class="chart2">
+            <canvas id="donutChart2" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="linear-container">
+        <canvas id="myChart" width="800" height="400"></canvas>
+        <script src="../js/linear-chart.js"></script>
+    </div>
+    <script src="../js/linear-chart.js"></script>
+    <script src="../js/chart.js"></script>
     <script src="../js/menu.js"></script>
     <script src="../js/options.js"></script>
-</div>
 </body>
 </html>

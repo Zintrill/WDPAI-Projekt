@@ -1,60 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>USERS</title>
-    <link rel="stylesheet" type="text/css" href="../css/background.css">
-    <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/bb4f511674.js" crossorigin="anonymous"></script>
-    
+    <title>Testy</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-streaming/2.0.0/chartjs-plugin-streaming.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-<div class="container-dash">
-    <nav class="top-nav">
-        <img class="img-log" src="../img/logo.svg">
-        <ul class="nav-menu">
-            <li><a href="dashboard.html" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
-            <li><a href="snmp.html" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
-            <li><a href="configuration.html" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
-            <li><a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
-        </ul>
-        <span class="nav-text">name</span>
-        <nav class="user-options">
-            <div class="options">
-                <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
-                <ul class="options-menu" id="optionsMenu">
-                    <li><a href="#" class="option-button"><i class="fa-solid fa-gear"></i>Options</a></li>
-                    <li><a href="#" class="option-button"><i class="fa-solid fa-question"></i>About</a></li>
-                    <li><a href="login.html" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
-                </ul>
-            </div>
-        </nav>
-    </nav>
-    <div class="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
+    <div class="linear-container">
+    <canvas id="myChart" width="800" height="400"></canvas>
+    <script src="../js/linear-chart.js"></script>
     </div>
-    <div class="page-title"><h1>Dashboard</h1></div>
-        <div class="container-main">
-            <div class="alerts-buttons">
-                <button class="button warning-button">
-                    <div><i class="fa-solid fa-exclamation-triangle"></i> <span class="count">10</span></div>
-                    <div>Warnings</div>
-                </button>
-                <button class="button critical-button">
-                    <div><i class="fa-solid fa-exclamation-triangle"></i> <span class="count">5</span></div>
-                    <div>Critical</div>
-                </button>
-            </div>
-        <div class="donuts">
-            <canvas id="donutChart1" width="400" height="400"></canvas>
-            <canvas id="donutChart2" width="400" height="400"></canvas>
-        </div>
-    </div>
-    <script src="../js/chart.js"></script>
-    <script src="../js/menu.js"></script>
-    <script src="../js/options.js"></script>
-</body>
 </html>
