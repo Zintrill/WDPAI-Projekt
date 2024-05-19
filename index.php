@@ -1,2 +1,14 @@
 <?php
-echo "<h1>Hello World</h1>";
+
+require 'Routing.php';
+
+$path = trim($_SERVER['REQUEST_URI'],'/');
+$path = parse_url($path, PHP_URL_PATH);
+
+Routing::get('index', 'DefaultController');
+Routing::get('dashboard', 'DefaultController');
+Routing::get('snmp', 'DefaultController');
+Routing::get('configuration', 'DefaultController');
+Routing::get('users', 'DefaultController');
+
+Routing::run($path);

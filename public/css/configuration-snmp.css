@@ -1,5 +1,5 @@
 .container-snmp-devices {
-    width: 80%;
+    width: 90%;
     margin: 10vh auto;
 }
 
@@ -18,104 +18,105 @@
     border-radius: 10px; /* Zaokrąglone rogi */
 }
 
-.action-button:hover{
+.action-button:hover {
     background-color: rgb(161, 161, 161); /* Kolor podświetlenia po najechaniu */
 }
-.device-item {
-    display: flex;
-    justify-content: space-between;
+
+/* Ustawienie grid layout dla nagłówka tabeli i elementów urządzeń */
+.table-header, .device-item {
+    display: grid;
+    grid-template-columns: 20% 10% 15% 10% 10% 15% 15%; /* Definiuje szerokości kolumn */
+    gap: 10px;
     align-items: center;
     padding: 8px;
-    border-bottom: 1px solid #ccc;
-    background-color: white; /* Dodane białe tło */
-    border-radius: 15px; /* Dodane zaokrąglenie */
-    font-weight: bold;
 }
 
-/* Dodatkowe style dla linii tytułów kolumn */
+/* Styl dla nagłówka tabeli */
 .table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    background-color: #555; /* Kolor tła */
-    border-radius: 15px; /* Zaokrąglenie */
-    margin-bottom: 10px; /* Dodany odstęp */
+    background-color: #555;
+    border-radius: 15px;
     margin-bottom: 1.5em;
-    padding-right: 5em;
     font-weight: bold;
     color: white;
 }
 
-.device, .device-phone {
-    flex: 1;
-    color: white; /* Kolor tekstu */
+/* Styl dla elementów urządzeń */
+.device-item {
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    border-radius: 15px;
+    font-weight: bold;
+    padding: 8px;
+    position: relative;
 }
 
-/* Dodatkowe style dla użytkowników */
-
-
-.device-info,.device-info-phone {
-    flex: 1;
-    color: #555; /* Szary kolor tekstu */
+/* Styl dla przycisków akcji */
+.editButton, .deleteButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555; /* Szary kolor */
 }
 
-.editButton,
-.deleteButton,
+.editButton {
+    position: absolute;
+    right: 40px; /* Odsunięcie od prawej krawędzi */
+}
+
+.deleteButton {
+    position: absolute;
+    right: 10px; /* Odsunięcie od prawej krawędzi */
+}
+
+.editButton:hover, .deleteButton:hover {
+    color: red;
+}
+
+/* Upewnienie się, że kolumny są wyśrodkowane */
+.title, .device-info, .title-phone, .device-info-phone {
+    text-align: center;
+}
+
+/* Styl dla przycisku "eye" */
 .eye-icon {
     background-color: transparent;
     border: none;
     cursor: pointer;
     font-size: 18px;
-    margin-left: 8px;
     color: #555; /* Szary kolor */
 }
 
-.editButton:hover,
-.deleteButton:hover,
 .eye-icon:hover {
     color: red;
 }
 
-.title-phone,
-.title,
-.device-info-phone,
-.device-inf {
-width: 14vw;
-}
-
-
 @media only screen and (max-width: 820px) {
-    
     .container-snmp-devices {
         width: 90%; /* Szerokość kontenera dostosowana do mniejszych ekranów */
         font-size: small;
     }
 
-    .device-info-phone, .title-phone{
+    .device-info-phone, .title-phone {
         display: none;
     }
+
     .action-button {
         padding: 12px 24px; /* Zwiększona wielkość przycisku */
         font-size: 20px; /* Zmniejszona wielkość tekstu przycisku */
     }
-    .title-phone,
-    .title,
-    .device-info-phone,
-    .device-info {
+
+    .title-phone, .title, .device-info-phone, .device-info {
         width: auto; /* Ustawienie szerokości na automatyczną dla wersji mobilnej */
         text-align: center; /* Wyśrodkowanie tekstu */
         word-wrap: break-word; /* Dodanie wrapa dla długiego tekstu */
     }
 
-    .device-info-phone,
-    .device-info {
-            flex: 1; /* Ustawienie flex na 1, aby kolumny zajmowały dostępne miejsce */
-            
+    .device-info-phone, .device-info {
+        flex: 1; /* Ustawienie flex na 1, aby kolumny zajmowały dostępne miejsce */
     }
 
-    .table-header
-    {
+    .table-header {
         padding-right: 8em;
     }
 }

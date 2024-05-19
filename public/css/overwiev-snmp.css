@@ -1,0 +1,75 @@
+/* Styl dla pola wyszukiwania */
+.search-input {
+    width: 50%; /* Zmniejszamy szerokość pola wyszukiwania */
+    padding: 2px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+/* Styl dla pola wyboru */
+.filter-select {
+    width: 30%; /* Zmniejszamy szerokość pola wyboru */
+    padding: 2px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+/* Styl dla segmentów */
+.segment {
+    flex: 1;
+    padding: 2px;
+    text-align: center; /* Wyśrodkowanie tekstu wewnątrz segmentu */
+}
+
+/* Styl dla kontenera tabeli */
+.snmp-management {
+    margin-top: 20px;
+    max-width: 90%;
+    width: 90%;
+    margin: 12.3vh auto;
+    padding: 20px;
+}
+
+/* Styl dla nagłówka tabeli */
+.table-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    background-color: #555;
+    border-radius: 30px;
+    margin-bottom: 1.5em;
+    font-weight: bold;
+    color: white;
+    padding: 8px;
+}
+
+/* Styl dla elementów urządzeń */
+.device-item {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    border-radius: 15px;
+    font-weight: bold;
+    padding: 8px;
+    margin-bottom: 1vh;
+}
+
+/* Styl dla przycisku akcji */
+.ellipsisButton {
+    color: black;
+    border: none;
+    cursor: pointer;
+    text-align: center; /* Wyśrodkowanie przycisku */
+}
+
+/* Upewnienie się, że kolumny są wyśrodkowane */
+.title, .device-info, .title-phone, .device-info-phone {
+    text-align: center;
+    white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+    overflow: hidden; /* Ukrywa tekst, który nie mieści się w komórce */
+    text-overflow: ellipsis; /* Dodaje wielokropek do ukrytego tekstu */
+}
