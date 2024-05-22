@@ -11,4 +11,6 @@ Routing::get('snmp', 'DefaultController');
 Routing::get('configuration', 'DefaultController');
 Routing::get('users', 'DefaultController');
 
+Routing::post('login', 'SecurityController');
+
 Routing::run($path);
