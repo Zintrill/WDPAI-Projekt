@@ -18,11 +18,10 @@
                     }
                     ?>
                 </div>
-                <button type="submit" class="button-login"><a href="dashboard.html">LOGIN</button></a>
+                <button type="submit" class="button-login">LOGIN</button></a>
                 <p class="register-text">Don’t have account? <a href="#" class="link-register">Create here</a>.</p>
                 <button class="register-button">JOIN NOW</button> 
             </form>
         </div>
     </div>
 </body>
-<a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>

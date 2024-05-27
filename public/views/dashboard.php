@@ -15,10 +15,10 @@
     <nav class="top-nav">
         <img class="img-log" src="public/img/logo.svg">
         <ul class="nav-menu">
-            <li><a href="dashboard.html" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
-            <li><a href="snmp.html" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
-            <li><a href="configuration.html" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
-            <li><a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
+            <li><a href="dashboard" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
+            <li><a href="snmp" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
+            <li><a href="configuration" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
+            <li><a href="users" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
         </ul>
         <span class="nav-text">name</span>
         <nav class="user-options">
@@ -27,7 +27,7 @@
                 <ul class="options-menu" id="optionsMenu">
                     <li><a href="#" class="option-button"><i class="fa-solid fa-gear"></i>Options</a></li>
                     <li><a href="#" class="option-button"><i class="fa-solid fa-question"></i>About</a></li>
-                    <li><a href="login.html" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
+                    <li><a href="login" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
                 </ul>
             </div>
         </nav>

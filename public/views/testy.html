@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USERS</title>
-    <link rel="stylesheet" type="text/css" href="public/css/background.css">
-    <link rel="stylesheet" type="text/css" href="public/css/users.css">
+    <link rel="stylesheet" type="text/css" href="../css/background.css">
+    <link rel="stylesheet" type="text/css" href="../css/users.css">
     <script src="https://kit.fontawesome.com/bb4f511674.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container-dash">
         <nav class="top-nav">
-            <img class="img-log" src="public/img/logo.svg">
+            <img class="img-log" src="../img/logo.svg">
             <ul class="nav-menu">
-                <li><a href="dashboard" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
-                <li><a href="snmp" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
-                <li><a href="configuration" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
-                <li><a href="users" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
+                <li><a href="dashboard.html" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
+                <li><a href="snmp.html" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
+                <li><a href="configuration.html" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
+                <li><a href="users.html" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
             </ul>
             <span class="nav-text">name</span>
             <nav class="user-options">
@@ -25,7 +25,7 @@
                     <ul class="options-menu" id="optionsMenu">
                         <li><a href="#" class="option-button"><i class="fa-solid fa-gear"></i>Options</a></li>
                         <li><a href="#" class="option-button"><i class="fa-solid fa-question"></i>About</a></li>
-                        <li><a href="login" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
+                        <li><a href="login.html" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
                     </ul>
                 </div>
             </nav>
@@ -36,7 +36,10 @@
             <span class="bar"></span>
         </div>
         <div class="page-title"><h1>Users</h1></div>
+        <script src="../js/menu.js"></script>
+        <script src="../js/options.js"></script>
     </div>
+
     <div class="container-users">
         <div class="user-management">
             <button id="addUserButton" class="action-button"><i class="fa-solid fa-user-plus"></i> ADD USER</button>
@@ -78,8 +81,7 @@
             <button type="button" class="add-another-button" onclick="addAnotherUser()">Add Another User</button>
         </form>
     </div>
-    <script src="public/js/menu.js"></script>
-    <script src="public/js/options.js"></script>
-    <script src="public/js/user-form.js"></script>
+
+    <script src="../js/user-form.js"></script>
 </body>
 </html>

@@ -92,6 +92,51 @@
     color: red;
 }
 
+/* Styl dla formularza użytkownika */
+.user-form {
+    background-color: #727272;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    padding: 40px; /* Zwiększenie paddingu */
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    width: 20%; /* Zwiększenie szerokości formularza */
+}
+
+.user-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-form input, .user-form select, .user-form button {
+    padding: 8px;
+    margin-top: 10px; /* Dodanie większego marginesu */
+    font-size: 16px; /* Zwiększenie rozmiaru czcionki */
+    border-radius: 8px; /* Zaokrąglenie pól formularza */
+    border: 1px solid #ccc;
+}
+
+.user-form .submit-button, .user-form .cancel-button, .user-form .add-another-button {
+    margin-top: 1.5vh;
+    padding: 10px;
+    font-size: 16px; /* Zwiększenie rozmiaru czcionki */
+    cursor: pointer;
+    border: 2px solid #000; /* Dodanie obramowania */
+    border-radius: 8px; /* Zaokrąglenie krawędzi */
+    background-color: white; /* Białe tło dla przycisku */
+    color: black; /* Czarny tekst */
+    width: 50%;
+    margin-left: 5vw;
+}
+
+.user-form .submit-button:hover, .user-form .cancel-button:hover, .user-form .add-another-button:hover {
+    background-color: rgb(161, 161, 161);
+}
+
+
 @media only screen and (max-width: 820px) {
     .container-users {
         width: 90%; /* Szerokość kontenera dostosowana do mniejszych ekranów */
@@ -102,22 +147,47 @@
         display: none;
     }
 
+    .title-phone{
+        display: none;
+    }
+
     .action-button {
         padding: 12px 24px; /* Zwiększona wielkość przycisku */
         font-size: 20px; /* Zmniejszona wielkość tekstu przycisku */
     }
 
-    .title-phone, .title, .user-info-phone, .user-info {
+    .title-phone, .title, .user-info {
         width: auto; /* Ustawienie szerokości na automatyczną dla wersji mobilnej */
         text-align: center; /* Wyśrodkowanie tekstu */
         word-wrap: break-word; /* Dodanie wrapa dla długiego tekstu */
     }
 
-    .user-info-phone, .user-info {
+    .user-info {
         flex: 1; /* Ustawienie flex na 1, aby kolumny zajmowały dostępne miejsce */
     }
 
     .table-header {
         padding-right: 8em;
     }
+    .user-form {
+    width: 60%;
+    }
+
+    .user-form .submit-button, .user-form .cancel-button, .user-form .add-another-button{
+    width: 80%;
+    margin-left: 8vw;
+    }
+    
+   .user-item,.table-header {
+        display: grid;
+        grid-template-columns: 20% 25% 35%; /* Definiuje szerokości kolumn */
+        gap: 5px;
+        align-items: center;
+        padding: 8px;
+    }
+
+
 }
+
+
+

@@ -8,9 +8,9 @@ class Routing
 
     public static $routes;
 
-    public static function get($url, $controller) 
+    public static function get($url, $view) 
     {
-        self::$routes[$url] = $controller;
+        self::$routes[$url] = $view;
     }
 
     public static function post($url, $view)
