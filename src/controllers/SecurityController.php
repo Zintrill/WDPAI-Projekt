@@ -10,14 +10,13 @@ class SecurityController extends AppController
     {
         $userRepository = new UserRepository();
 
-
         if ($this->isPost()) {
             $username = $_POST["username"];
             $password = $_POST["password"];
 
             $user = $userRepository->getUser($username);
 
-            if(!$user) {
+            if (!$user) {
                 return $this->render('login', ['messages' => ['User not exists!']]);
             }
 
@@ -29,10 +28,20 @@ class SecurityController extends AppController
                 return $this->render('login', ['messages' => ['Wrong password!']]);
             }
 
-            return $this->render('dashboard');
+            // Store user data in session
+            $_SESSION['user_id'] = $user->getUsername();
+            $_SESSION['full_name'] = $user->getFullName();
+
+            return $this->render('dashboard', ['username' => $user->getFullName()]);
         }
 
-        // Default rendering for GET request
         return $this->render('login');
+    }
+
+    public function logout()
+    {
+        session_unset();
+        session_destroy();
+        $this->render('login', ['messages' => ['You have been logged out!']]);
     }
 }

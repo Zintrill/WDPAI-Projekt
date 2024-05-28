@@ -1,7 +1,9 @@
 <?php
 
-class AppController {
+session_start();
 
+class AppController
+{
     private $request;
 
     public function __construct()
@@ -19,7 +21,7 @@ class AppController {
         return $this->request === 'POST';
     }
 
-    protected function render(string $template = null, array $variables = []) 
+    protected function render(string $template = null, array $variables = [])
     {
         $templatePath = 'public/views/'.$template.'.php';
         $output = 'File not found';

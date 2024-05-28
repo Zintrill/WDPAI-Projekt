@@ -15,7 +15,7 @@ class UserRepository extends Repository
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($user == false){
+        if ($user == false) {
             return null;
         }
 
@@ -27,5 +27,4 @@ class UserRepository extends Repository
             $user['email']
         );
     }
-    
 }

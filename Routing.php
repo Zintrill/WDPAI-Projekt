@@ -24,7 +24,7 @@ class Routing
             
         if(!array_key_exists($action, self::$routes)) 
         {
-            die("Wroong url!");
+            die("Wrong url!");
         }
 
         $controller = self::$routes[$action];

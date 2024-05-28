@@ -20,14 +20,18 @@
             <li><a href="configuration" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
             <li><a href="users" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
         </ul>
-        <span class="nav-text">name</span>
+        <span class="nav-text"><?php echo $username; ?></span>
         <nav class="user-options">
             <div class="options">
                 <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
                 <ul class="options-menu" id="optionsMenu">
                     <li><a href="#" class="option-button"><i class="fa-solid fa-gear"></i>Options</a></li>
                     <li><a href="#" class="option-button"><i class="fa-solid fa-question"></i>About</a></li>
-                    <li><a href="login" class="option-button"><i class="fa-solid fa-power-off"></i>Logout</a></li>
+                    <li>
+                        <form action="logout" method="post">
+                            <button type="submit" class="option-button"><i class="fa-solid fa-power-off"></i> Logout</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </nav>

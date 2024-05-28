@@ -8,8 +8,7 @@ class User
     private $permission_id;
     private $email;
 
-
-    public function __construct( string $fullname, string $username, string $password, int $permission_id, string $email)
+    public function __construct(string $fullname, string $username, string $password, int $permission_id, string $email)
     {
         $this->fullname = $fullname;
         $this->username = $username;
@@ -57,7 +56,7 @@ class User
     {
         $this->permission_id = $permission_id;
     }
-   
+
     public function getEmail(): string
     {
         return $this->email;
@@ -67,6 +66,4 @@ class User
     {
         $this->email = $email;
     }
-
-    
 }
