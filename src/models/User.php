@@ -1,20 +1,31 @@
 <?php
 
-
 class User
 {
+    private $fullname;
     private $username;
     private $password;
-    private $name;
-    private $surname;
+    private $permission_id;
+    private $email;
 
 
-    public function __construct( string $username, string $password, string $name, string $surname)
+    public function __construct( string $fullname, string $username, string $password, int $permission_id, string $email)
     {
+        $this->fullname = $fullname;
         $this->username = $username;
         $this->password = $password;
-        $this->name = $name;
-        $this->surname = $surname;
+        $this->permission_id = $permission_id;
+        $this->email = $email;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->fullname;
+    }
+
+    public function setFullName(string $fullname)
+    {
+        $this->fullname = $fullname;
     }
 
     public function getUsername(): string
@@ -37,24 +48,24 @@ class User
         $this->password = $password;
     }
 
-    public function getName(): string
+    public function getPermission_id(): int
     {
-        return $this->name;
+        return $this->permission_id;
     }
 
-    public function setName(string $name)
+    public function setPermission_id(int $permission_id)
     {
-        $this->name = $name;
+        $this->permission_id = $permission_id;
+    }
+   
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
-    public function getSurname(): string
+    public function setEmail(string $email)
     {
-        return $this->surname;
-    }
-
-    public function setSurname(string $surname)
-    {
-        $this->surname = $surname;
+        $this->email = $email;
     }
 
     
