@@ -95,52 +95,7 @@
     color: red;
 }
 
-/* Styl dla formularza użytkownika */
-.user-form {
-    background-color: #727272;
-    border: 1px solid #000000;
-    border-radius: 15px;
-    padding: 40px; /* Zwiększenie paddingu */
-    position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    width: 20%; /* Zwiększenie szerokości formularza */
-}
-
-.user-form form {
-    display: flex;
-    flex-direction: column;
-}
-
-.user-form input, .user-form select, .user-form button {
-    padding: 8px;
-    margin-top: 10px; /* Dodanie większego marginesu */
-    font-size: 16px; /* Zwiększenie rozmiaru czcionki */
-    border-radius: 8px; /* Zaokrąglenie pól formularza */
-    border: 1px solid #ccc;
-}
-
-.user-form .submit-button, .user-form .cancel-button, .user-form .add-another-button {
-    margin-top: 1.5vh;
-    padding: 10px;
-    font-size: 16px; /* Zwiększenie rozmiaru czcionki */
-    cursor: pointer;
-    border: 2px solid #000; /* Dodanie obramowania */
-    border-radius: 8px; /* Zaokrąglenie krawędzi */
-    background-color: white; /* Białe tło dla przycisku */
-    color: black; /* Czarny tekst */
-    width: 50%;
-    margin-left: 5vw;
-}
-
-.user-form .submit-button:hover, .user-form .cancel-button:hover, .user-form .add-another-button:hover {
-    background-color: rgb(161, 161, 161);
-}
-
-/* Styl dla okienka modalnego */
-.modal {
+.add-modal {
     display: none; /* Ukryj domyślnie */
     position: fixed;
     z-index: 1;
@@ -153,12 +108,11 @@
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: white;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 300px;
+    width: 15vw;
     border-radius: 10px;
     text-align: center;
 }
@@ -177,8 +131,86 @@
     cursor: pointer;
 }
 
-.confirm-button, .cancel-button {
+.user-form .form-group {
+    margin-bottom: 15px;
+}
+
+.user-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.user-form .form-group input,
+.user-form .form-group select {
+    width: 100%;
+    box-sizing: border-box; /* Upewnij się, że padding i border są wliczane w szerokość */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 2vw;
+}
+
+.form-buttons .confirm-button, .form-buttons .cancel-button {
+    display: inline-block; /* Wyświetl przyciski w jednej linii */
     margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button {
+    background-color: #4CAF50; /* Kolor potwierdzenia (zielony) */
+    color: white;
+    border: none;
+}
+
+.cancel-button {
+    background-color: #f44336; /* Kolor anulowania (czerwony) */
+    color: white;
+    border: none;
+}
+
+.confirm-button:hover, .cancel-button:hover {
+    opacity: 0.8;
+}
+
+
+/* Styl dla okienka modalnego */
+.delete-modal {
+    display: none; /* Ukryj domyślnie */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Czarny z przezroczystością */
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.confirm-button, .cancel-button {
+    margin: 20px;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -199,6 +231,13 @@
 
 .confirm-button:hover, .cancel-button:hover {
     opacity: 0.8;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
 }
 
 

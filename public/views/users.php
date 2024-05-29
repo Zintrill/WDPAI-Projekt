@@ -54,22 +54,52 @@
             <div id="userList"></div> <!-- Lista użytkowników będzie tutaj -->
         </div>
     </div>
-
-    <div class="user-form" id="userForm" style="display: none;">
-        <form action="addUser" method="post">
-            <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
-            <input type="text" id="username" name="username" placeholder="Username" required>
-            <input type="password" id="userPassword" name="userPassword" placeholder="Password" required>
-            <select id="userRole" name="userRole" required>
-                <option value="" disabled selected>Role</option>
-                <option value="administrator">Administrator</option>
-                <option value="technician">Technician</option>
-                <option value="operator">Operator</option>
-            </select>
-            <input type="email" id="email" name="email" placeholder="E-mail" required>
-            <button type="submit" class="submit-button">Submit</button>
-            <button type="button" class="cancel-button" id="cancelUserButton" onclick="cancelUserForm()">Cancel</button>
-        </form>
+    <div id="userModal" class="add-modal">
+    <div class="modal-content">
+        <span class="close-button" id="closeUserModal">&times;</span>
+            <form id="userForm" action="addUser" method="post" class="user-form">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <span id="usernameError" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" name="userPassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role</label>
+                    <select id="userRole" name="userRole" required>
+                        <option value="" disabled selected>Role</option>
+                        <option value="administrator">Administrator</option>
+                        <option value="technician">Technician</option>
+                        <option value="operator">Operator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="E-mail" required>
+                    <span id="emailError" class="error-message"></span>
+                </div>
+                <div class="form-group form-buttons">
+                    <button type="submit" class="confirm-button">Submit</button>
+                    <button type="button" class="cancel-button" id="cancelUserButton">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div id="deleteModal" class="delete-modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <p>Are you sure you want to delete this user?</p>
+            <button id="confirmDeleteButton" class="confirm-button">Yes</button>
+            <button id="cancelDeleteButton" class="cancel-button">No</button>
+        </div>
     </div>
     <script src="public/js/menu.js"></script>
     <script src="public/js/options.js"></script>
