@@ -18,7 +18,7 @@
                 <li><a href="configuration" class="nav-link button"><i class="fa-solid fa-wrench"></i> Configuration</a></li>
                 <li><a href="users" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
             </ul>
-            <span class="nav-text"><?php echo $username; ?></span>
+            <span class="nav-text"><?php echo isset($username) ? $username : 'name'; ?></span>
             <nav class="user-options">
                 <div class="options">
                     <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
@@ -51,39 +51,29 @@
                 <span class="title">Role</span>
                 <span class="title">E-mail</span>
             </div>
-            <div id="userList">
-                <div class="user-item">
-                    <span class="user-info-phone">John Doe</span>
-                    <span class="user-info">johndoe</span>
-                    <span class="user-info-phone">******** <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
-                    <span class="user-info">Administrator</span>
-                    <span class="user-info">example@rcp.com</span>
-                    <button class="editButton"><i class="fa-solid fa-pencil"></i></button>
-                    <button class="deleteButton"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </div>
+            <div id="userList"></div> <!-- Lista użytkowników będzie tutaj -->
         </div>
     </div>
 
     <div class="user-form" id="userForm" style="display: none;">
-        <form>
-            <input type="text" id="fullName" name="fullName" placeholder="Full Name">
-            <input type="text" id="username" name="username" placeholder="Username">
-            <input type="password" id="userPassword" name="userPassword" placeholder="Password">
-            <select id="userRole" name="userRole">
+        <form action="addUser" method="post">
+            <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="userPassword" name="userPassword" placeholder="Password" required>
+            <select id="userRole" name="userRole" required>
                 <option value="" disabled selected>Role</option>
                 <option value="administrator">Administrator</option>
                 <option value="technician">Technician</option>
                 <option value="operator">Operator</option>
             </select>
-            <input type="email" id="email" name="email" placeholder="E-mail">
-            <button type="button" class="submit-button" onclick="submitUserForm()">Submit</button>
+            <input type="email" id="email" name="email" placeholder="E-mail" required>
+            <button type="submit" class="submit-button">Submit</button>
             <button type="button" class="cancel-button" id="cancelUserButton" onclick="cancelUserForm()">Cancel</button>
-            <button type="button" class="add-another-button" onclick="addAnotherUser()">Add Another User</button>
         </form>
     </div>
     <script src="public/js/menu.js"></script>
     <script src="public/js/options.js"></script>
-    <script src="public/js/user-form.js"></script>
+    <script src="public/js/user-list.js"></script>
+    <script src="public/js/user-form.js"></script> <!-- Nowy plik JavaScript -->
 </body>
 </html>

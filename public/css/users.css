@@ -26,10 +26,12 @@
 /* Ustawienie grid layout dla nagłówka tabeli i elementów urządzeń oraz użytkowników */
 .table-header, .user-item {
     display: grid;
-    grid-template-columns: 20% 15% 10% 15% 20% 10% 10%; /* Definiuje szerokości kolumn */
+    grid-template-columns: 20% 10% 10% 10% 20%; /* Definiuje szerokości kolumn */
     gap: 80px;
     align-items: center;
+    justify-content: center;
     padding: 8px;
+
 }
 
 /* Styl dla nagłówka tabeli */
@@ -49,6 +51,7 @@
     font-weight: bold;
     padding: 8px;
     position: relative;
+    margin-bottom: 1vh
 }
 
 /* Styl dla przycisków akcji */
@@ -134,6 +137,68 @@
 
 .user-form .submit-button:hover, .user-form .cancel-button:hover, .user-form .add-another-button:hover {
     background-color: rgb(161, 161, 161);
+}
+
+/* Styl dla okienka modalnego */
+.modal {
+    display: none; /* Ukryj domyślnie */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Czarny z przezroczystością */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.confirm-button, .cancel-button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button {
+    background-color: #d9534f; /* Kolor potwierdzenia (czerwony) */
+    color: white;
+    border: none;
+}
+
+.cancel-button {
+    background-color: #5bc0de; /* Kolor anulowania (niebieski) */
+    color: white;
+    border: none;
+}
+
+.confirm-button:hover, .cancel-button:hover {
+    opacity: 0.8;
 }
 
 
