@@ -54,43 +54,69 @@
                 <span class="title-phone">Password</span>
                 <span class="title-phone">Description</span>
             </div>
-            <div id="DeviceList">
-                <div class="device-item">
-                    <span class="device-info">SW02-Test</span>
-                    <span class="device-info">Switch</span>
-                    <span class="device-info">192.168.101.1</span>
-                    <span class="device-info-phone">SNMP V1</span>
-                    <span class="device-info-phone">SNMP controller</span>
-                    <span class="device-info-phone">******** <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
-                    <span class="device-info-phone">Biuro w hotrelu</span>
-                    <button class="editButton"><i class="fa-solid fa-pencil"></i></button>
-                    <button class="deleteButton"><i class="fa-solid fa-trash"></i></button>
-                </div>
+            <div id="DeviceList" class="device-list">
+                <!-- Lista urządzeń będzie tutaj -->
             </div>
         </div>
     </div>
 
-    <div class="device-form" id="deviceForm" style="display: none;">
-        <form>
-            <input type="text" id="deviceName" name="deviceName" placeholder="Device Name">
-            <input type="text" id="deviceType" name="deviceType" placeholder="Type">
-            <input type="text" id="deviceAddress" name="deviceAddress" placeholder="Address IP">
-            <select id="snmpVersion" name="snmpVersion">
-                <option value="" disabled selected>SNMP Version</option>
-                <option value="v1">SNMP V1</option>
-                <option value="v2c">SNMP V2c</option>
-                <option value="v3">SNMP V3</option>
-            </select>
-            <input type="text" id="userName" name="userName" placeholder="User Name">
-            <input type="password" id="password" name="password" placeholder="Password">
-            <input type="text" id="description" name="description" placeholder="Description">
-            <button type="button" class="submit-button" onclick="submitForm()">Submit</button>
-            <button type="button" class="add-another-button" onclick="addAnotherDevice()">Add Another Device</button>
-            <button type="button" class="cancel-button" id="cancelButton" onclick="cancelForm()">Cancel</button>
-        </form>
+    <div id="deviceModal" class="add-modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeDeviceModal">&times;</span>
+            <form id="deviceForm" class="device-form">
+                <div class="form-group">
+                    <label for="deviceName">Device Name</label>
+                    <input type="text" id="deviceName" name="deviceName" placeholder="Device Name" required>
+                    <span id="deviceNameError" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="deviceType">Type</label>
+                    <select id="deviceType" name="deviceType" required>
+                        <option value="" disabled selected>Select Type</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deviceAddress">Address IP</label>
+                    <input type="text" id="deviceAddress" name="deviceAddress" placeholder="Address IP" required>
+                    <span id="deviceAddressError" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="snmpVersion">SNMP Version</label>
+                    <select id="snmpVersion" name="snmpVersion" required>
+                        <option value="" disabled selected>SNMP Version</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userName">User Name</label>
+                    <input type="text" id="userName" name="userName" placeholder="User Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" placeholder="Description">
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="cancel-button" id="cancelDeviceButton">Cancel</button>
+                    <button type="submit" class="confirm-button">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <div id="deleteModal" class="delete-modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <p>Are you sure you want to delete this device?</p>
+            <button id="confirmDeleteButton" class="confirm-button">Yes</button>
+            <button id="cancelDeleteButton" class="cancel-button">No</button>
+        </div>
+    </div>
+    
+    <script src="public/js/menu.js"></script>
+    <script src="public/js/options.js"></script>
+    <script src="public/js/device-form.js"></script>
 </body>
-<script src="public/js/menu.js"></script>
-<script src="public/js/options.js"></script>
-<script src="public/js/device-form.js"></script>
 </html>

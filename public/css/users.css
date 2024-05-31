@@ -26,7 +26,7 @@
 /* Ustawienie grid layout dla nagłówka tabeli i elementów urządzeń oraz użytkowników */
 .table-header, .user-item {
     display: grid;
-    grid-template-columns: 20% 10% 10% 10% 20%; /* Definiuje szerokości kolumn */
+    grid-template-columns: 20% 10% 7% 10% 20%; /* Definiuje szerokości kolumn */
     gap: 80px;
     align-items: center;
     justify-content: center;
@@ -89,11 +89,23 @@
     cursor: pointer;
     font-size: 18px;
     color: #555; /* Szary kolor */
+    position: absolute;
+    right: 0; /* Dodane do prawidłowego umiejscowienia ikony */
+    top: 50%; /* Dodane do prawidłowego umiejscowienia ikony */
+    transform: translateY(-50%); /* Centrowanie w pionie */
 }
 
 .eye-icon:hover {
     color: red;
 }
+
+.user-info-phone {
+    position: relative; /* Dodane, aby ikona była prawidłowo umiejscowiona */
+    display: flex; /* Dodane, aby umożliwić łatwe pozycjonowanie elementów wewnątrz */
+    align-items: center; /* Dodane, aby wyrównać elementy wewnątrz w pionie */
+    justify-content: center;
+}
+
 
 .add-modal {
     display: none; /* Ukryj domyślnie */
@@ -102,7 +114,7 @@
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    height: 110%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4); /* Czarny z przezroczystością */
 }
@@ -273,22 +285,23 @@
     .table-header {
         padding-right: 8em;
     }
-    .user-form {
-    width: 60%;
-    }
 
-    .user-form .submit-button, .user-form .cancel-button, .user-form .add-another-button{
-    width: 80%;
-    margin-left: 8vw;
-    }
-    
    .user-item,.table-header {
         display: grid;
         grid-template-columns: 20% 25% 35%; /* Definiuje szerokości kolumn */
-        gap: 5px;
+        gap: 8px;
         align-items: center;
+        justify-content: start;
         padding: 8px;
     }
+
+    .modal-content{
+        width: 60vw;
+        font-size: 20px;
+        justify-content: center;
+        margin: 50% auto;
+    }
+
 
 
 }

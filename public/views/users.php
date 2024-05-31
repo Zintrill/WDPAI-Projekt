@@ -37,7 +37,7 @@
         <div class="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
-            <span class="bar"></span>
+            <span class=" bar"></span>
         </div>
         <div class="page-title"><h1>Users</h1></div>
     </div>
@@ -55,8 +55,8 @@
         </div>
     </div>
     <div id="userModal" class="add-modal">
-    <div class="modal-content">
-        <span class="close-button" id="closeUserModal">&times;</span>
+        <div class="modal-content">
+            <span class="close-button" id="closeUserModal">&times;</span>
             <form id="userForm" action="addUser" method="post" class="user-form">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
@@ -75,9 +75,9 @@
                     <label for="userRole">Role</label>
                     <select id="userRole" name="userRole" required>
                         <option value="" disabled selected>Role</option>
-                        <option value="administrator">Administrator</option>
-                        <option value="technician">Technician</option>
-                        <option value="operator">Operator</option>
+                        <option value="1">Administrator</option>
+                        <option value="2">Technician</option>
+                        <option value="3">Operator</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -92,7 +92,7 @@
             </form>
         </div>
     </div>
-    </div>
+
     <div id="deleteModal" class="delete-modal">
         <div class="modal-content">
             <span class="close-button" id="closeModal">&times;</span>
@@ -104,6 +104,5 @@
     <script src="public/js/menu.js"></script>
     <script src="public/js/options.js"></script>
     <script src="public/js/user-list.js"></script>
-    <script src="public/js/user-form.js"></script> <!-- Nowy plik JavaScript -->
 </body>
 </html>

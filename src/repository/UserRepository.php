@@ -1,5 +1,7 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once 'Repository.php';
 require_once __DIR__.'/../models/User.php';
 
@@ -8,7 +10,7 @@ class UserRepository extends Repository
     public function getUser(string $username): ?User
     {
         $stmt = $this->database->connect()->prepare('
-        SELECT * FROM public.users WHERE username = :username
+            SELECT * FROM public.users WHERE username = :username
         ');
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
         $stmt->execute();
@@ -31,16 +33,20 @@ class UserRepository extends Repository
     public function addUser(string $fullName, string $username, string $password, string $role, string $email)
     {
         $roleMap = [
-            'administrator' => 1,
-            'technician' => 2,
-            'operator' => 3
+            '1' => 1,
+            '2' => 2,
+            '3' => 3
         ];
 
-        $permissionId = $roleMap[$role];
+        $permissionId = $roleMap[$role] ?? null;
+
+        if ($permissionId === null) {
+            throw new Exception('Invalid role');
+        }
 
         $stmt = $this->database->connect()->prepare('
-        INSERT INTO public.users (fullname, username, password, permission_id, email)
-        VALUES (:fullname, :username, :password, :permission_id, :email)
+            INSERT INTO public.users (fullname, username, password, permission_id, email)
+            VALUES (:fullname, :username, :password, :permission_id, :email)
         ');
         $stmt->bindParam(':fullname', $fullName, PDO::PARAM_STR);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
@@ -54,9 +60,9 @@ class UserRepository extends Repository
     public function getAllUsers(): array
     {
         $stmt = $this->database->connect()->prepare('
-        SELECT u.id, u.fullname, u.username, u.password, p.role as role, u.email
-        FROM public.users u
-        JOIN public.permissions p ON u.permission_id = p.permission_id
+            SELECT u.id, u.fullname, u.username, u.password, p.role as role, u.email
+            FROM public.users u
+            JOIN public.permissions p ON u.permission_id = p.permission_id
         ');
         $stmt->execute();
 
@@ -68,29 +74,97 @@ class UserRepository extends Repository
     public function deleteUser(int $userId)
     {
         $stmt = $this->database->connect()->prepare('
-        DELETE FROM public.users WHERE id = :id
+            DELETE FROM public.users WHERE id = :id
         ');
         $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         $stmt->execute();
     }
 
     public function isUsernameTaken(string $username): bool
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT COUNT(*) FROM public.users WHERE username = :username
+        ');
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+    
+    public function isEmailTaken(string $email): bool
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT COUNT(*) FROM public.users WHERE email = :email
+        ');
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+    
+
+    public function updateUser(int $userId, string $fullName, string $username, string $password, string $role, string $email)
+    {
+        $roleMap = [
+            '1' => 1,
+            '2' => 2,
+            '3' => 3
+        ];
+
+        $permissionId = $roleMap[$role];
+
+        $stmt = $this->database->connect()->prepare('
+            UPDATE public.users 
+            SET fullname = :fullname, username = :username, password = :password, permission_id = :permission_id, email = :email
+            WHERE id = :id
+        ');
+        $stmt->bindParam(':fullname', $fullName, PDO::PARAM_STR);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':permission_id', $permissionId, PDO::PARAM_INT);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
+
+    public function getUserById(int $userId): ?array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT u.id, u.fullname, u.username, u.password, u.permission_id, u.email
+            FROM public.users u
+            WHERE u.id = :id
+        ');
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user == false) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    public function isUsernameTakenByAnother(string $username, int $userId): bool
 {
     $stmt = $this->database->connect()->prepare('
-        SELECT COUNT(*) FROM public.users WHERE username = :username
+        SELECT COUNT(*) FROM public.users WHERE username = :username AND id != :id
     ');
     $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
 
-public function isEmailTaken(string $email): bool
+public function isEmailTakenByAnother(string $email, int $userId): bool
 {
     $stmt = $this->database->connect()->prepare('
-        SELECT COUNT(*) FROM public.users WHERE email = :email
+        SELECT COUNT(*) FROM public.users WHERE email = :email AND id != :id
     ');
     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
+
 }

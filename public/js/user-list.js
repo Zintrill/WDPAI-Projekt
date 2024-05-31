@@ -1,31 +1,65 @@
 document.addEventListener('DOMContentLoaded', function() {
     fetchUsers();
 
-    let userIdToDelete = null; // Przechowuje ID użytkownika do usunięcia
+    let userIdToDelete = null;
+    let userIdToEdit = null;
 
-    // Pobierz elementy modalu
     const deleteModal = document.getElementById('deleteModal');
     const closeModal = document.getElementById('closeModal');
     const confirmDeleteButton = document.getElementById('confirmDeleteButton');
     const cancelDeleteButton = document.getElementById('cancelDeleteButton');
 
-    // Funkcja do otwierania modalu
+    const userModal = document.getElementById('userModal');
+    const closeUserModal = document.getElementById('closeUserModal');
+    const cancelUserButton = document.getElementById('cancelUserButton');
+    const userForm = document.getElementById('userForm');
+    const fullNameInput = document.getElementById('fullName');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('userPassword');
+    const roleSelect = document.getElementById('userRole');
+    const usernameError = document.getElementById('usernameError');
+    const emailError = document.getElementById('emailError');
+    const submitButton = userForm.querySelector('.confirm-button');
+    const addUserButton = document.getElementById('addUserButton');
+
+    addUserButton.addEventListener('click', function() {
+        userIdToEdit = null;
+        userForm.reset();
+        usernameError.textContent = '';
+        emailError.textContent = '';
+        submitButton.textContent = 'Submit';
+        userModal.style.display = 'block';
+    });
+
+    closeUserModal.addEventListener('click', function() {
+        userModal.style.display = 'none';
+    });
+
+    cancelUserButton.addEventListener('click', function() {
+        userModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == userModal) {
+            userModal.style.display = 'none';
+        }
+        if (event.target == deleteModal) {
+            deleteModal.style.display = 'none';
+        }
+    });
+
     function openModal() {
         deleteModal.style.display = 'block';
     }
 
-    // Funkcja do zamykania modalu
     function closeModalWindow() {
         deleteModal.style.display = 'none';
     }
 
-    // Zamykanie modalu po kliknięciu przycisku "X"
     closeModal.addEventListener('click', closeModalWindow);
-
-    // Zamykanie modalu po kliknięciu przycisku "No"
     cancelDeleteButton.addEventListener('click', closeModalWindow);
 
-    // Obsługa kliknięcia przycisku "Yes" w celu potwierdzenia usunięcia
     confirmDeleteButton.addEventListener('click', function() {
         if (userIdToDelete) {
             fetch('deleteUser', {
@@ -61,13 +95,53 @@ document.addEventListener('DOMContentLoaded', function() {
                     userItem.innerHTML = `
                         <span class="user-info-phone">${user.fullname}</span>
                         <span class="user-info">${user.username}</span>
-                        <span class="user-info-phone">******** <i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
+                        <span class="user-info-phone">
+                        <span class="hidden-password" data-password="${user.password}">********</span><i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
                         <span class="user-info">${user.role}</span>
                         <span class="user-info">${user.email}</span>
+                        <button class="editButton" data-id="${user.id}"><i class="fa-solid fa-pencil"></i></button>
                         <button class="deleteButton" data-id="${user.id}"><i class="fa-solid fa-trash"></i></button>
                     `;
 
                     userList.appendChild(userItem);
+                });
+
+                document.querySelectorAll('.eye-icon').forEach(icon => {
+                    icon.addEventListener('mousedown', function() {
+                        const hiddenPassword = this.previousElementSibling;
+                        hiddenPassword.textContent = hiddenPassword.getAttribute('data-password');
+                    });
+
+                    icon.addEventListener('mouseup', function() {
+                        const hiddenPassword = this.previousElementSibling;
+                        hiddenPassword.textContent = '********';
+                    });
+
+                    icon.addEventListener('mouseleave', function() {
+                        const hiddenPassword = this.previousElementSibling;
+                        hiddenPassword.textContent = '********';
+                    });
+                });
+
+                document.querySelectorAll('.editButton').forEach(button => {
+                    button.addEventListener('click', function() {
+                        userIdToEdit = this.getAttribute('data-id');
+                        fetch(`getUserById?id=${userIdToEdit}`)
+                            .then(response => response.json())
+                            .then(user => {
+                                console.log('User fetched for edit:', user);
+                                fullNameInput.value = user.fullname;
+                                usernameInput.value = user.username;
+                                passwordInput.value = user.password; // Leave password field empty
+                                roleSelect.value = user.permission_id;
+                                emailInput.value = user.email;
+                                usernameError.textContent = ''; // Clear previous error messages
+                                emailError.textContent = '';    // Clear previous error messages
+                                submitButton.textContent = 'Update';
+                                userModal.style.display = 'block';
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
                 });
 
                 document.querySelectorAll('.deleteButton').forEach(button => {
@@ -77,6 +151,46 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 });
             })
-            .catch(error => console.error('There has been a problem with your fetch operation:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred: ' + error.message);
+            });
     }
+
+    userForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const url = userIdToEdit ? 'updateUser' : 'addUser';
+        const formData = new FormData(userForm);
+        if (userIdToEdit) {
+            formData.append('userId', userIdToEdit);
+        }
+
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                fetchUsers();
+                userModal.style.display = 'none';
+                userForm.reset(); // Reset form after successful submission
+            } else {
+                if (data.message.includes('Username is already taken')) {
+                    usernameError.textContent = data.message;
+                } else {
+                    usernameError.textContent = '';
+                }
+
+                if (data.message.includes('Email is already taken')) {
+                    emailError.textContent = data.message;
+                } else {
+                    emailError.textContent = '';
+                }
+
+                console.error('Error:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
 });

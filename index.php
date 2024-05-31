@@ -14,14 +14,28 @@ Routing::get('dashboard', 'DefaultController');
 Routing::get('snmp', 'DefaultController');
 Routing::get('configuration', 'DefaultController');
 Routing::get('users', 'DefaultController');
-Routing::get('getUsers', 'UserController'); // Nowa trasa
-Routing::post('login', 'SecurityController');
-Routing::post('logout', 'SecurityController');
-Routing::post('addUser', 'UserController'); // Nowa trasa
-Routing::post('deleteUser', 'UserController');
+Routing::get('getUsers', 'UserController');
 Routing::get('checkUsername', 'UserController');
 Routing::get('checkEmail', 'UserController');
+Routing::get('getUserById', 'UserController');
 
+Routing::post('updateUser', 'UserController');
+Routing::post('login', 'SecurityController');
+Routing::post('logout', 'SecurityController');
+Routing::post('addUser', 'UserController');
+Routing::post('deleteUser', 'UserController');
+
+// Nowe trasy dla urządzeń SNMP
+Routing::get('getDevices', 'DeviceController');
+Routing::get('getDeviceById', 'DeviceController');
+Routing::get('getDeviceTypes', 'DeviceController');
+Routing::get('getSnmpVersions', 'DeviceController');
+Routing::get('checkDeviceName', 'DeviceController'); // Nowa trasa do sprawdzania nazwy urządzenia
+Routing::get('checkAddressIp', 'DeviceController'); // Nowa trasa do sprawdzania adresu IP
+
+Routing::post('addDevice', 'DeviceController');
+Routing::post('updateDevice', 'DeviceController');
+Routing::post('deleteDevice', 'DeviceController');
 
 Routing::run($path);
 ?>
