@@ -14,13 +14,18 @@ function pingDevice($ip) {
 function getMacAddress($ip, $community, $username = null, $password = null) {
     $oid = "1.3.6.1.2.1.2.2.1.6";
     $session = new SNMP(SNMP::VERSION_2c, $ip, $community);
+    $macAddress = 'unknown';
+
     try {
         $mac = $session->get($oid);
         $session->close();
-        return snmp2_mac($mac);
+        $macAddress = snmp2_mac($mac);
     } catch (Exception $e) {
-        return 'unknown';
+        // Nie można pobrać adresu MAC, urządzenie nie obsługuje SNMP lub wystąpił inny błąd
+        error_log("Error while fetching MAC address for $ip: " . $e->getMessage());
     }
+
+    return $macAddress;
 }
 
 function snmp2_mac($snmpString) {
@@ -35,7 +40,7 @@ function updateDeviceStatus($pdo, $deviceId, $status, $macAddress) {
         INSERT INTO device_status (device_id, status, mac_address)
         VALUES (:device_id, :status, :mac_address)
         ON CONFLICT (device_id) 
-        DO UPDATE SET status = EXCLUDED.status, mac_address = EXCLUDED.mac_address
+        DO UPDATE SET status = EXCLUDED.status, mac_address = COALESCE(EXCLUDED.mac_address, device_status.mac_address)
     ');
     $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
     $stmt->bindParam(':status', $status, PDO::PARAM_STR);
@@ -49,8 +54,20 @@ function updateAllDeviceStatuses($pdo) {
     $devices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($devices as $device) {
-        $status = pingDevice($device['address_ip']);
-        $macAddress = getMacAddress($device['address_ip'], 'public', $device['username'], $device['password']);
+        $ip = $device['address_ip'];
+        $snmpVersion = $device['snmp_version_id'];
+        $status = 'offline';
+        $macAddress = 'unknown';
+
+        // Sprawdź status urządzenia przy użyciu pingowania
+        $status = pingDevice($ip);
+
+        // Jeśli urządzenie jest online, spróbuj pobrać adres MAC przy użyciu SNMP
+        if ($status === 'online' && $snmpVersion !== null) {
+            $macAddress = getMacAddress($ip, 'public', $device['username'], $device['password']);
+        }
+
+        // Zaktualizuj status urządzenia w bazie danych
         updateDeviceStatus($pdo, $device['id'], $status, $macAddress);
     }
 }
@@ -62,3 +79,5 @@ $pdo = $database->connect();
 // Aktualizacja statusu i adresu MAC wszystkich urządzeń
 updateAllDeviceStatuses($pdo);
 echo "Device statuses updated";
+
+?>
