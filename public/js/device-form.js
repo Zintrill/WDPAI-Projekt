@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         }
     });
+    
 
     function fetchDevices() {
         fetch('getDevices')
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     deviceItem.innerHTML = `
                         <span class="device-info">${device.device_name}</span>
                         <span class="device-info">${device.type}</span>
-                        <span class="device-info">${device.address_ip}</span>
+                        <span class="device-info"><a href="http://${device.address_ip}" target="_blank">${device.address_ip}</a></span>
                         <span class="device-info-phone">${device.snmp_version}</span>
                         <span class="device-info-phone">${device.username}</span>
                         <span class="device-info-phone">

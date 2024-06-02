@@ -246,7 +246,21 @@
 .device-list {
     max-height: 63vh; /* Maksymalna wysokość listy urządzeń */
     overflow-y: auto; /* Dodanie paska przewijania w pionie */
-    width: 90.6vw;
+}
+
+/* Ukrycie paska przewijania */
+.device-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.device-info a {
+    color: black; /* Kolor linku */
+    text-decoration: none; /* Brak podkreślenia linku */
+}
+
+.device-info a:hover {
+    color: grey; /* Kolor linku po najechaniu */
 }
 
 @media only screen and (max-width: 820px) {

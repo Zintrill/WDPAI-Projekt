@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SNMP OVERVIEW</title>
     <link rel="stylesheet" type="text/css" href="public/css/background.css">
-    <link rel="stylesheet" type="text/css" href="public/css/overwiev-snmp.css">
+    <link rel="stylesheet" type="text/css" href="public/css/overview-snmp.css">
     <script src="https://kit.fontawesome.com/bb4f511674.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -43,6 +43,7 @@
         <div class="page-title"><h1>SNMP Overview</h1></div>
         <script src="public/js/menu.js"></script>
         <script src="public/js/options.js"></script>
+        <script src="public/js/overview-snmp.js"></script>
     </div>
     <div class="container-snmp-devices">
         <div class="snmp-management">
@@ -51,6 +52,18 @@
                     <span class="title" data-sort="asc">
                         Device Name 
                         <i class="fas fa-sort" data-column="device_name"></i>
+                    </span>
+                </div>
+                <div class="segment">
+                    <span class="title" data-sort="asc">
+                        Status 
+                        <i class="fas fa-sort" data-column="status"></i>
+                    </span>
+                </div>
+                <div class="segment">
+                    <span class="title" data-sort="asc">
+                        Type 
+                        <i class="fas fa-sort" data-column="type"></i>
                     </span>
                 </div>
                 <div class="segment">
@@ -66,61 +79,39 @@
                     </span>
                 </div>
                 <div class="segment">
-                    <span class="title" data-sort="asc">
-                        Type 
-                        <i class="fas fa-sort" data-column="type"></i>
-                    </span>
-                </div>
-                <div class="segment">
-                    <span class="title" data-sort="asc">
-                        Status 
-                        <i class="fas fa-sort" data-column="status"></i>
-                    </span>
-                </div>
-                <div class="segment">
                     <span class="title" data-sort="asc">UP Time <i class="fas fa-sort" data-column="uptime"></i></span>
                 </div>
                 <div class="segment">
                     <span class="title-phone">Actions</span>
                 </div>
-                    <div class="segment">
-                        <input type="text" class="search-input" data-column="device_name" placeholder="Search Device Name...">
-                    </div>
-                    <div class="segment">
-                        <input type="text" class="search-input" data-column="ip_address" placeholder="Search Address IP...">
-                    </div>
-                    <div class="segment">
-                        <input type="text" class="search-input" data-column="mac_address" placeholder="Search Address MAC...">
-                    </div>
-                    <div class="segment">
-                        <select class="filter-select" data-column="type">
-                            <option value="">All</option>
-                            <option value="Switch">Switch</option>
-                            <option value="Router">Router</option>
-                            <!-- Dodaj więcej opcji według potrzeb -->
-                        </select>
-                    </div>
-                    <div class="segment">
-                        <select class="filter-select" data-column="status">
-                            <option value="">All</option>
-                            <option value="Online">Online</option>
-                            <option value="Offline">Offline</option>
-                            <!-- Dodaj więcej opcji według potrzeb -->
-                        </select>
-                    </div>
-                    <div class="segment"></div>
-                    <div class="segment"></div>
+                <div class="segment">
+                    <input type="text" class="search-input" data-column="device_name" placeholder="Search Device Name...">
+                </div>
+                <div class="segment">
+                    <select class="filter-select" data-column="status">
+                        <option value="">All</option>
+                        <option value="Online">Online</option>
+                        <option value="Offline">Offline</option>
+                        <option value="Waiting">Waiting</option>
+                    </select>
+                </div>
+                <div class="segment">
+                    <select class="filter-select" data-column="type">
+                        <option value="">All</option>
+                        <option value="Switch">Switch</option>
+                        <option value="Router">Router</option>
+                        <!-- Dodaj więcej opcji według potrzeb -->
+                    </select>
+                </div>
+                <div class="segment">
+                    <input type="text" class="search-input" data-column="ip_address" placeholder="Search Address IP...">
+                </div>
+                <div class="segment">
+                    <input type="text" class="search-input" data-column="mac_address" placeholder="Search Address MAC...">
+                </div>
             </div>
             
-            <div id="DeviceList">
-                <div class="device-item">
-                    <span class="device-info">SW02-Test</span>
-                    <span class="device-info">Online</span>
-                    <span class="device-info">Switch</span>
-                    <span class="device-info-phone">192.168.101.1</span>
-                    <span class="device-info-phone">00:15:5D:1A:76:8C</span>
-                    <span class="device-info-phone">12D 12H</span>
-                    <button class="ellipsisButton"><i class="fa-solid fa-ellipsis"></i></button>
+            <div id="DeviceList" class="device-list">
                 </div>
             </div>
            

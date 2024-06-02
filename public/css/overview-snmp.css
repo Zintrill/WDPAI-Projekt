@@ -73,3 +73,35 @@
     overflow: hidden; /* Ukrywa tekst, który nie mieści się w komórce */
     text-overflow: ellipsis; /* Dodaje wielokropek do ukrytego tekstu */
 }
+
+.device-info a {
+    color: black; /* Kolor linku */
+    text-decoration: none; /* Brak podkreślenia linku */
+}
+
+.device-info a:hover {
+    color: grey; /* Kolor linku po najechaniu */
+}
+
+.status-online {
+    color: #7FC008; /* Zielony dla online */
+}
+
+.status-offline {
+    color: #DB303F; /* Czerwony dla offline */
+}
+
+.status-waiting {
+    color: #F68D2B; /* Pomarańczowy dla waiting */
+}
+
+.device-list {
+    max-height: 62vh; /* Maksymalna wysokość listy urządzeń */
+    overflow-y: auto; /* Dodanie paska przewijania w pionie */
+}
+
+/* Ukrycie paska przewijania */
+.device-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

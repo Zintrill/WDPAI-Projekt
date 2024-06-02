@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     confirmDeleteButton.addEventListener('click', function() {
         if (userIdToDelete) {
+            console.log('Deleting user with ID:', userIdToDelete); // Logowanie ID użytkownika
             fetch('deleteUser', {
                 method: 'POST',
                 headers: {
@@ -69,8 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: `userId=${userIdToDelete}`
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text); // Logowanie surowej odpowiedzi
+                const data = JSON.parse(text); // Następnie przetwarzanie na JSON
                 if (data.status === 'success') {
                     fetchUsers();
                     closeModalWindow();
@@ -79,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error:', error));
+        } else {
+            console.error('Error: userIdToDelete is undefined');
         }
     });
 
@@ -86,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('getUsers')
             .then(response => response.json())
             .then(users => {
+                console.log(users); // Sprawdzenie struktury danych
                 const userList = document.getElementById('userList');
                 userList.innerHTML = '';
                 users.forEach(user => {
@@ -130,13 +136,18 @@ document.addEventListener('DOMContentLoaded', function() {
                             .then(response => response.json())
                             .then(user => {
                                 console.log('User fetched for edit:', user);
-                                fullNameInput.value = user.fullname;
-                                usernameInput.value = user.username;
-                                passwordInput.value = user.password; // Leave password field empty
-                                roleSelect.value = user.permission_id;
-                                emailInput.value = user.email;
-                                usernameError.textContent = ''; // Clear previous error messages
-                                emailError.textContent = '';    // Clear previous error messages
+                                // Sprawdzenie, czy dane są poprawnie otrzymywane
+                                if (user) {
+                                    fullNameInput.value = user.fullname || '';
+                                    usernameInput.value = user.username || '';
+                                    passwordInput.value = user.password || '';
+                                    roleSelect.value = user.permission_id || '';
+                                    emailInput.value = user.email || '';
+                                } else {
+                                    console.error('User data is null or undefined');
+                                }
+                                usernameError.textContent = ''; // Wyczyść poprzednie komunikaty o błędach
+                                emailError.textContent = '';    // Wyczyść poprzednie komunikaty o błędach
                                 submitButton.textContent = 'Update';
                                 userModal.style.display = 'block';
                             })
@@ -164,33 +175,36 @@ document.addEventListener('DOMContentLoaded', function() {
         if (userIdToEdit) {
             formData.append('userId', userIdToEdit);
         }
-
+    
         fetch(url, {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => response.text())
+        .then(text => {
+            console.log('Raw response:', text); // Logowanie surowej odpowiedzi
+            const data = JSON.parse(text); // Następnie przetwarzanie na JSON
             if (data.status === 'success') {
                 fetchUsers();
                 userModal.style.display = 'none';
-                userForm.reset(); // Reset form after successful submission
+                userForm.reset(); // Resetowanie formularza po pomyślnym przesłaniu
             } else {
                 if (data.message.includes('Username is already taken')) {
                     usernameError.textContent = data.message;
                 } else {
                     usernameError.textContent = '';
                 }
-
+    
                 if (data.message.includes('Email is already taken')) {
                     emailError.textContent = data.message;
                 } else {
                     emailError.textContent = '';
                 }
-
+    
                 console.error('Error:', data.message);
             }
         })
         .catch(error => console.error('Error:', error));
     });
+    
 });

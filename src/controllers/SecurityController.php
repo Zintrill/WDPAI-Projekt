@@ -28,7 +28,7 @@ class SecurityController extends AppController
                 return $this->render('login', ['messages' => ['Wrong password!']]);
             }
 
-            // Store user data in session
+            // Przechowywanie danych użytkownika w sesji
             $_SESSION['user_id'] = $user->getUsername();
             $_SESSION['full_name'] = $user->getFullName();
 

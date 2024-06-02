@@ -30,12 +30,13 @@ Routing::get('getDevices', 'DeviceController');
 Routing::get('getDeviceById', 'DeviceController');
 Routing::get('getDeviceTypes', 'DeviceController');
 Routing::get('getSnmpVersions', 'DeviceController');
-Routing::get('checkDeviceName', 'DeviceController'); // Nowa trasa do sprawdzania nazwy urządzenia
-Routing::get('checkAddressIp', 'DeviceController'); // Nowa trasa do sprawdzania adresu IP
+Routing::get('checkDeviceName', 'DeviceController'); 
+Routing::get('checkAddressIp', 'DeviceController'); 
 
 Routing::post('addDevice', 'DeviceController');
 Routing::post('updateDevice', 'DeviceController');
 Routing::post('deleteDevice', 'DeviceController');
+Routing::get('getDevicesWithStatus', 'DeviceController'); // Nowa trasa do pobierania urządzeń ze statusem
 
 Routing::run($path);
 ?>

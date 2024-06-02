@@ -5,14 +5,16 @@ ENV RUN_DEPS \
     libzip \
     libpng \
     libjpeg-turbo \
-    postgresql-libs
+    postgresql-libs \
+    net-snmp-libs
 
 ENV BUILD_DEPS \
     zlib-dev \
     libzip-dev \
     libpng-dev \
     libjpeg-turbo-dev \
-    postgresql-dev
+    postgresql-dev \
+    net-snmp-dev
 
 ENV PHP_EXTENSIONS \
     opcache \
@@ -20,7 +22,8 @@ ENV PHP_EXTENSIONS \
     gd \
     bcmath \
     pgsql \
-    pdo_pgsql
+    pdo_pgsql \
+    snmp
 
 RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && docker-php-ext-configure gd --with-jpeg \
@@ -29,7 +32,7 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
-RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini
 
 # Copy the application code
 COPY . /app
