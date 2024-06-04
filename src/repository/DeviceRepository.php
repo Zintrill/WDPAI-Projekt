@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Repository.php';
+require_once __DIR__.'/../../database.php';
 
 class DeviceRepository extends Repository
 {
@@ -82,23 +83,9 @@ class DeviceRepository extends Repository
     $stmt->execute();
     $deviceId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
-    // Initialize device status as 'waiting'
-    $this->initializeDeviceStatus($deviceId);
+    return $deviceId;
 }
 
-public function initializeDeviceStatus(int $deviceId)
-{
-    $stmt = $this->database->connect()->prepare('
-        INSERT INTO public.device_status (device_id, status, mac_address)
-        VALUES (:device_id, :status, :mac_address)
-    ');
-    $status = 'waiting';
-    $macAddress = 'N/A';
-    $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
-    $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-    $stmt->bindParam(':mac_address', $macAddress, PDO::PARAM_STR);
-    $stmt->execute();
-}
     public function updateDevice(int $deviceId, string $deviceName, int $typeId, string $addressIp, int $snmpVersionId, string $userName, string $password, ?string $description)
     {
         $stmt = $this->database->connect()->prepare('
@@ -117,16 +104,6 @@ public function initializeDeviceStatus(int $deviceId)
 
         $stmt->execute();
     }
-
-    public function deleteDevice(int $deviceId)
-    {
-        $stmt = $this->database->connect()->prepare('
-            DELETE FROM public.device WHERE id = :id
-        ');
-        $stmt->bindParam(':id', $deviceId, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-    
 
     public function isDeviceNameTaken($deviceName)
     {
@@ -147,4 +124,57 @@ public function initializeDeviceStatus(int $deviceId)
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
+
+    public function updateDeviceStatus(int $deviceId, string $status)
+    {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE public.device_status
+            SET status = :status
+            WHERE device_id = :device_id
+        ');
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    
+    public function getLastInsertId()
+    {
+        return $this->database->connect()->lastInsertId();
+    }
+    
+    public function deleteDeviceStatus(int $deviceId)
+    {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM public.device_status WHERE device_id = :device_id
+        ');
+        $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    
+    public function deleteDevice(int $deviceId)
+    {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM public.device WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $deviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    
+    public function initializeDeviceStatus(int $deviceId, string $status = 'waiting', string $macAddress = 'N/A')
+    {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO public.device_status (device_id, status, mac_address)
+            VALUES (:device_id, :status, :mac_address)
+        ');
+        $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':mac_address', $macAddress, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+    
+    
+    
+    
+    
+
 }

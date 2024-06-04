@@ -1,11 +1,37 @@
-# Wybierz odpowiedni obraz bazowy
 FROM php:7.4.3-fpm-alpine3.11
 
-# Instaluj wymagane zależności
-RUN apk add --no-cache dcron
+ENV RUN_DEPS \
+    zlib \
+    libzip \
+    libpng \
+    libjpeg-turbo \
+    postgresql-libs
 
-# Skopiuj plik crontab do kontenera
-COPY crontab /etc/crontabs/root
+ENV BUILD_DEPS \
+    zlib-dev \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    postgresql-dev
 
-# Uruchom komendę crona w tle
-CMD ["crond", "-f"]
+ENV PHP_EXTENSIONS \
+    opcache \
+    zip \
+    gd \
+    bcmath \
+    pgsql \
+    pdo_pgsql
+
+RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install -j "$(nproc)" $PHP_EXTENSIONS \
+    && apk del .build-deps
+
+RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
+
+RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+
+# Copy the application code
+COPY . /app
+
+VOLUME ["/app"]

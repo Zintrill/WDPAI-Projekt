@@ -102,7 +102,7 @@ class DeviceController extends AppController
         try {
             if ($this->isPost()) {
                 $deviceRepository = new DeviceRepository();
-
+    
                 $deviceName = $_POST['deviceName'];
                 $deviceType = $_POST['deviceType'];
                 $deviceAddress = $_POST['deviceAddress'];
@@ -110,24 +110,30 @@ class DeviceController extends AppController
                 $userName = $_POST['userName'];
                 $password = $_POST['password'];
                 $description = $_POST['description'];
-
+    
                 if ($deviceRepository->isDeviceNameTaken($deviceName)) {
                     echo json_encode(['status' => 'error', 'message' => 'Device name is already taken']);
                     return;
                 }
-
+    
                 if ($deviceRepository->isAddressIpTaken($deviceAddress)) {
                     echo json_encode(['status' => 'error', 'message' => 'Address IP is already taken']);
                     return;
                 }
-
+    
                 if (!$this->isValidIpAddress($deviceAddress)) {
                     echo json_encode(['status' => 'error', 'message' => 'Invalid IP address format']);
                     return;
                 }
-
-                $deviceRepository->addDevice($deviceName, $deviceType, $deviceAddress, $snmpVersion, $userName, $password, $description);
-
+    
+                $deviceId = $deviceRepository->addDevice($deviceName, $deviceType, $deviceAddress, $snmpVersion, $userName, $password, $description);
+    
+                // Ustaw MAC address na 'N/A' dla ICMP
+                $macAddress = ($snmpVersion == 'ICMP') ? 'N/A' : '';
+    
+                // Zainicjalizuj status urządzenia
+                $deviceRepository->initializeDeviceStatus($deviceId, 'waiting', $macAddress);
+    
                 echo json_encode(['status' => 'success']);
             } else {
                 throw new Exception('Invalid request method');
@@ -137,83 +143,123 @@ class DeviceController extends AppController
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+    
 
-    public function updateDevice()
-    {
-        header('Content-Type: application/json');
-        try {
-            if ($this->isPost()) {
-                $deviceRepository = new DeviceRepository();
 
-                $deviceId = $_POST['deviceId'];
-                $deviceName = $_POST['deviceName'];
-                $deviceType = $_POST['deviceType'];
-                $deviceAddress = $_POST['deviceAddress'];
-                $snmpVersion = $_POST['snmpVersion'];
-                $userName = $_POST['userName'];
-                $password = $_POST['password'];
-                $description = $_POST['description'];
 
-                $currentDevice = $deviceRepository->getDeviceById($deviceId);
 
-                // Sprawdź, czy nazwa urządzenia została zmieniona i czy nowa nazwa jest zajęta
-                if ($currentDevice['device_name'] !== $deviceName && $deviceRepository->isDeviceNameTaken($deviceName)) {
-                    echo json_encode(['status' => 'error', 'message' => 'Device name is already taken']);
-                    return;
-                }
 
-                // Sprawdź, czy adres IP został zmieniony i czy nowy adres jest zajęty
-                if ($currentDevice['address_ip'] !== $deviceAddress && $deviceRepository->isAddressIpTaken($deviceAddress)) {
-                    echo json_encode(['status' => 'error', 'message' => 'Address IP is already taken']);
-                    return;
-                }
 
-                if (!$this->isValidIpAddress($deviceAddress)) {
-                    echo json_encode(['status' => 'error', 'message' => 'Invalid IP address format']);
-                    return;
-                }
+public function updateDevice()
+{
+    header('Content-Type: application/json');
+    try {
+        if ($this->isPost()) {
+            $deviceRepository = new DeviceRepository();
 
-                $deviceRepository->updateDevice($deviceId, $deviceName, $deviceType, $deviceAddress, $snmpVersion, $userName, $password, $description);
+            $deviceId = $_POST['deviceId'];
+            $deviceName = $_POST['deviceName'];
+            $deviceType = $_POST['deviceType'];
+            $deviceAddress = $_POST['deviceAddress'];
+            $snmpVersion = $_POST['snmpVersion'];
+            $userName = $_POST['userName'];
+            $password = $_POST['password'];
+            $description = $_POST['description'];
 
-                echo json_encode(['status' => 'success']);
-            } else {
-                throw new Exception('Invalid request method');
+            $currentDevice = $deviceRepository->getDeviceById($deviceId);
+
+            // Sprawdź, czy nazwa urządzenia została zmieniona i czy nowa nazwa jest zajęta
+            if ($currentDevice['device_name'] !== $deviceName && $deviceRepository->isDeviceNameTaken($deviceName)) {
+                echo json_encode(['status' => 'error', 'message' => 'Device name is already taken']);
+                return;
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage(), 0);
-            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
-        }
-    }
 
-    public function deleteDevice()
-    {
-        header('Content-Type: application/json');
-        try {
-            if ($this->isPost()) {
-                $deviceId = $_POST['deviceId'];
-                $deviceRepository = new DeviceRepository();
-                $deviceRepository->deleteDevice($deviceId);
-
-                echo json_encode(['status' => 'success']);
-            } else {
-                throw new Exception('Invalid request method');
+            // Sprawdź, czy adres IP został zmieniony i czy nowy adres jest zajęty
+            if ($currentDevice['address_ip'] !== $deviceAddress && $deviceRepository->isAddressIpTaken($deviceAddress)) {
+                echo json_encode(['status' => 'error', 'message' => 'Address IP is already taken']);
+                return;
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage(), 0);
-            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
-        }
-    }
 
-    public function updateDeviceStatuses()
-    {
-        header('Content-Type: application/json');
-        try {
-            require_once __DIR__.'/../scripts/update_device_statuses.php';
-            echo json_encode(['status' => 'success', 'message' => 'Device statuses updated']);
-        } catch (Exception $e) {
-            error_log($e->getMessage(), 0);
-            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            if (!$this->isValidIpAddress($deviceAddress)) {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid IP address format']);
+                return;
+            }
+
+            $deviceRepository->updateDevice($deviceId, $deviceName, $deviceType, $deviceAddress, $snmpVersion, $userName, $password, $description);
+
+            // Zaktualizuj status urządzenia
+            $macAddress = ($snmpVersion === 'ICMP') ? 'N/A' : $currentDevice['mac_address'];
+            $deviceRepository->updateDeviceStatus($deviceId, 'waiting', $macAddress);
+
+            echo json_encode(['status' => 'success']);
+        } else {
+            throw new Exception('Invalid request method');
         }
+    } catch (Exception $e) {
+        error_log($e->getMessage(), 0);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
+}
+
+
+public function deleteDevice()
+{
+    header('Content-Type: application/json');
+    try {
+        if ($this->isPost()) {
+            $deviceId = $_POST['deviceId'];
+            $deviceRepository = new DeviceRepository();
+
+            // Usuń powiązane rekordy w tabeli device_status
+            $deviceRepository->deleteDeviceStatus($deviceId);
+
+            // Usuń rekord z tabeli device
+            $deviceRepository->deleteDevice($deviceId);
+
+            echo json_encode(['status' => 'success']);
+        } else {
+            throw new Exception('Invalid request method');
+        }
+    } catch (Exception $e) {
+        error_log($e->getMessage(), 0);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+}
+
+
+public function updateDeviceStatuses()
+{
+    header('Content-Type: application/json');
+    try {
+        $deviceRepository = new DeviceRepository();
+        $devices = $deviceRepository->getAllDevices();
+
+        foreach ($devices as $device) {
+            if ($device['snmp_version'] === 'ICMP') {
+                $status = $this->ping($device['address_ip']) ? 'Online' : 'Offline';
+                error_log('Updating status for Device ID: ' . $device['id'] . ' to ' . $status); // Loguj aktualizację statusu
+                $deviceRepository->updateDeviceStatus($device['id'], $status);
+            }
+        }
+        echo json_encode(['status' => 'success']);
+    } catch (Exception $e) {
+        error_log($e->getMessage(), 0);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+}
+
+
+private function ping($ip)
+{
+    // Użyj systemowego polecenia ping, aby sprawdzić dostępność urządzenia
+    $pingResult = shell_exec(sprintf('ping -c 1 %s', escapeshellarg($ip)));
+    error_log('Ping result for ' . $ip . ': ' . $pingResult); // Loguj wynik pingowania
+
+    // Sprawdź, czy w wyniku jest informacja o otrzymaniu odpowiedzi
+    $isReachable = strpos($pingResult, '1 packets received') !== false || strpos($pingResult, '1 received') !== false;
+    error_log('Is ' . $ip . ' reachable? ' . ($isReachable ? 'Yes' : 'No')); // Loguj dostępność
+
+    return $isReachable;
+}
 
 }

@@ -37,6 +37,9 @@ Routing::post('addDevice', 'DeviceController');
 Routing::post('updateDevice', 'DeviceController');
 Routing::post('deleteDevice', 'DeviceController');
 Routing::get('getDevicesWithStatus', 'DeviceController'); // Nowa trasa do pobierania urządzeń ze statusem
+Routing::get('pingDevice', 'DeviceController');
+Routing::get('updateDeviceStatuses', 'DeviceController');
+
 
 Routing::run($path);
 ?>
