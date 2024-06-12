@@ -31,6 +31,7 @@ class SecurityController extends AppController
             // Przechowywanie danych użytkownika w sesji
             $_SESSION['user_id'] = $user->getUsername();
             $_SESSION['full_name'] = $user->getFullName();
+            $_SESSION['user_role'] = $user->getPermissionId();
 
             return $this->render('dashboard', ['username' => $user->getFullName()]);
         }

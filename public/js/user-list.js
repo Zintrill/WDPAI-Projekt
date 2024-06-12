@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const userRole = parseInt(document.querySelector('meta[name="user-role"]').content, 10);
+
+    if (userRole > 1) {
+        document.getElementById('addUserButton').style.display = 'none';
+    }
+
     fetchUsers();
 
     let userIdToDelete = null;
@@ -70,10 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: `userId=${userIdToDelete}`
             })
-            .then(response => response.text())
-            .then(text => {
-                console.log('Raw response:', text); // Logowanie surowej odpowiedzi
-                const data = JSON.parse(text); // Następnie przetwarzanie na JSON
+            .then(response => response.json())
+            .then(data => {
                 if (data.status === 'success') {
                     fetchUsers();
                     closeModalWindow();
@@ -102,65 +106,67 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="user-info-phone">${user.fullname}</span>
                         <span class="user-info">${user.username}</span>
                         <span class="user-info-phone">
-                        <span class="hidden-password" data-password="${user.password}">********</span><i class="eye-icon fa-solid fa-eye-low-vision"></i></span>
+                        <span class="hidden-password" data-password="${user.password}">********</span>${userRole == 1 ? '<i class="eye-icon fa-solid fa-eye-low-vision"></i>' : ''}</span>
                         <span class="user-info">${user.role}</span>
                         <span class="user-info">${user.email}</span>
-                        <button class="editButton" data-id="${user.id}"><i class="fa-solid fa-pencil"></i></button>
-                        <button class="deleteButton" data-id="${user.id}"><i class="fa-solid fa-trash"></i></button>
+                        ${userRole == 1 ? `<button class="editButton" data-id="${user.id}"><i class="fa-solid fa-pencil"></i></button>` : ''}
+                        ${userRole == 1 ? `<button class="deleteButton" data-id="${user.id}"><i class="fa-solid fa-trash"></i></button>` : ''}
                     `;
 
                     userList.appendChild(userItem);
                 });
 
-                document.querySelectorAll('.eye-icon').forEach(icon => {
-                    icon.addEventListener('mousedown', function() {
-                        const hiddenPassword = this.previousElementSibling;
-                        hiddenPassword.textContent = hiddenPassword.getAttribute('data-password');
+                if (userRole == 1) {
+                    document.querySelectorAll('.eye-icon').forEach(icon => {
+                        icon.addEventListener('mousedown', function() {
+                            const hiddenPassword = this.previousElementSibling;
+                            hiddenPassword.textContent = hiddenPassword.getAttribute('data-password');
+                        });
+
+                        icon.addEventListener('mouseup', function() {
+                            const hiddenPassword = this.previousElementSibling;
+                            hiddenPassword.textContent = '********';
+                        });
+
+                        icon.addEventListener('mouseleave', function() {
+                            const hiddenPassword = this.previousElementSibling;
+                            hiddenPassword.textContent = '********';
+                        });
                     });
 
-                    icon.addEventListener('mouseup', function() {
-                        const hiddenPassword = this.previousElementSibling;
-                        hiddenPassword.textContent = '********';
+                    document.querySelectorAll('.editButton').forEach(button => {
+                        button.addEventListener('click', function() {
+                            userIdToEdit = this.getAttribute('data-id');
+                            fetch(`getUserById?id=${userIdToEdit}`)
+                                .then(response => response.json())
+                                .then(user => {
+                                    console.log('User fetched for edit:', user);
+                                    // Sprawdzenie, czy dane są poprawnie otrzymywane
+                                    if (user) {
+                                        fullNameInput.value = user.fullname || '';
+                                        usernameInput.value = user.username || '';
+                                        passwordInput.value = user.password || '';
+                                        roleSelect.value = user.permission_id || '';
+                                        emailInput.value = user.email || '';
+                                    } else {
+                                        console.error('User data is null or undefined');
+                                    }
+                                    usernameError.textContent = ''; // Wyczyść poprzednie komunikaty o błędach
+                                    emailError.textContent = '';    // Wyczyść poprzednie komunikaty o błędach
+                                    submitButton.textContent = 'Update';
+                                    userModal.style.display = 'block';
+                                })
+                                .catch(error => console.error('Error:', error));
+                        });
                     });
 
-                    icon.addEventListener('mouseleave', function() {
-                        const hiddenPassword = this.previousElementSibling;
-                        hiddenPassword.textContent = '********';
+                    document.querySelectorAll('.deleteButton').forEach(button => {
+                        button.addEventListener('click', function() {
+                            userIdToDelete = this.getAttribute('data-id');
+                            openModal();
+                        });
                     });
-                });
-
-                document.querySelectorAll('.editButton').forEach(button => {
-                    button.addEventListener('click', function() {
-                        userIdToEdit = this.getAttribute('data-id');
-                        fetch(`getUserById?id=${userIdToEdit}`)
-                            .then(response => response.json())
-                            .then(user => {
-                                console.log('User fetched for edit:', user);
-                                // Sprawdzenie, czy dane są poprawnie otrzymywane
-                                if (user) {
-                                    fullNameInput.value = user.fullname || '';
-                                    usernameInput.value = user.username || '';
-                                    passwordInput.value = user.password || '';
-                                    roleSelect.value = user.permission_id || '';
-                                    emailInput.value = user.email || '';
-                                } else {
-                                    console.error('User data is null or undefined');
-                                }
-                                usernameError.textContent = ''; // Wyczyść poprzednie komunikaty o błędach
-                                emailError.textContent = '';    // Wyczyść poprzednie komunikaty o błędach
-                                submitButton.textContent = 'Update';
-                                userModal.style.display = 'block';
-                            })
-                            .catch(error => console.error('Error:', error));
-                    });
-                });
-
-                document.querySelectorAll('.deleteButton').forEach(button => {
-                    button.addEventListener('click', function() {
-                        userIdToDelete = this.getAttribute('data-id');
-                        openModal();
-                    });
-                });
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -180,10 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
-        .then(text => {
-            console.log('Raw response:', text); // Logowanie surowej odpowiedzi
-            const data = JSON.parse(text); // Następnie przetwarzanie na JSON
+        .then(response => response.json())
+        .then(data => {
             if (data.status === 'success') {
                 fetchUsers();
                 userModal.style.display = 'none';
@@ -206,5 +210,4 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error:', error));
     });
-    
 });
