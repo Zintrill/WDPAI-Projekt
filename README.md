@@ -20,7 +20,6 @@ Docker
 Chart.js
 FontAwesome
 Setup
-To run this project on your local machine using Docker:
 
 Features
 Responsive Web Design (RWD): The application is fully responsive and works on various devices.
