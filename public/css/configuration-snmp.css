@@ -252,7 +252,7 @@
     }
 
     .table-header, .device-item {
-        grid-template-columns: 30% 20% 30%;
+        grid-template-columns: 1fr 1fr 1fr auto auto;
         gap: 5px;
         position: inherit;
     }
@@ -279,5 +279,7 @@
         position: inherit;
     }
 
-
+    .editButton, .deleteButton, .eye-icon {
+       position: static;
+    }
 }
