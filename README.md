@@ -78,13 +78,5 @@ Screenshots
 Landing Page
 
 
-Login Panel
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/f9c7fac1-e921-4fb3-b413-3d34471c17fc)
 
-
-Device Management
-
-
-Admin Panel
-
-
-For more detailed information, visit the documentation.
