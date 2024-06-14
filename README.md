@@ -74,9 +74,20 @@ Fields: user_id, device_id
 Relationships:
 user_id references users(user_id)
 device_id references device(id)
+
 Screenshots
-Landing Page
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/ab24398a-2be4-44a5-9666-0664520184fc)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/317ec1f6-7f82-4ade-94bf-68ed4281a4e6)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/c60989af-d589-4e6c-bf28-c15e6e0d1e17)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/159aa032-66b6-4fca-b5a2-1981dc777c4d)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/62456bdd-b55b-4233-94c8-6623ad66a306)
+
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/967ca5c0-733e-4469-92f0-522b067da517)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/990f62f2-740f-435e-ab1b-d86346c32fc2)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/90532a06-df69-4b63-94e6-738fa9eb2237)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/008554cb-ef63-4a89-bf92-545e4f6f8615)
+![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/bc2f7ea0-8da3-4b1a-981e-c9cb1b77cba9)
 
 
-![image](https://github.com/Zintrill/WDPAI-Projekt/assets/162897913/f9c7fac1-e921-4fb3-b413-3d34471c17fc)
+
 
