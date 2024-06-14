@@ -11,42 +11,35 @@ class DefaultController extends AppController
 
     public function dashboard()
     {
-        if ($this->isLogged()) {
-            $this->render('dashboard', ['username' => $_SESSION['full_name']]);
-        } else {
-            $this->render('login', ['messages' => ['You need to login first!']]);
-        }
+        $this->renderPage('dashboard');
     }
 
     public function configuration()
     {
-        if ($this->isLogged()) {
-            $this->render('configuration', ['username' => $_SESSION['full_name']]);
-        } else {
-            $this->render('login', ['messages' => ['You need to login first!']]);
-        }
+        $this->renderPage('configuration');
     }
 
     public function snmp()
     {
-        if ($this->isLogged()) {
-            $this->render('snmp', ['username' => $_SESSION['full_name']]);
-        } else {
-            $this->render('login', ['messages' => ['You need to login first!']]);
-        }
+        $this->renderPage('snmp');
     }
 
     public function users()
     {
-        if ($this->isLogged()) {
-            $this->render('users', ['username' => $_SESSION['full_name']]);
-        } else {
-            $this->render('login', ['messages' => ['You need to login first!']]);
-        }
+        $this->renderPage('users');
     }
 
     private function isLogged(): bool
     {
         return isset($_SESSION['user_id']);
+    }
+
+    private function renderPage(string $page)
+    {
+        if ($this->isLogged()) {
+            $this->render($page, ['username' => $_SESSION['full_name']]);
+        } else {
+            $this->render('login', ['messages' => ['You need to login first!']]);
+        }
     }
 }

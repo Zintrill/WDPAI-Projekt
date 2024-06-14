@@ -2,3 +2,4 @@
 .idea
 public/img
 config.php
+src/models/Encryption.php

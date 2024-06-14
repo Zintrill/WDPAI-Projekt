@@ -12,7 +12,7 @@
 <body>
     <div class="container-dash">
         <nav class="top-nav">
-            <img class="img-log" src="public/img/logo.svg">
+            <img class="img-log" src="public/img/logo.svg" alt="Logo">
             <ul class="nav-menu">
                 <li><a href="dashboard" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
                 <li><a href="snmp" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
@@ -55,9 +55,7 @@
                 <span class="title-phone">Password</span>
                 <span class="title-phone">Description</span>
             </div>
-            <div id="DeviceList" class="device-list">
-                <!-- Lista urządzeń będzie tutaj -->
-            </div>
+            <div id="DeviceList" class="device-list"></div>
         </div>
     </div>
 
@@ -111,8 +109,8 @@
         <div class="modal-content">
             <span class="close-button" id="closeModal">&times;</span>
             <p>Are you sure you want to delete this device?</p>
-            <button id="confirmDeleteButton" class="confirm-button">Yes</button>
             <button id="cancelDeleteButton" class="cancel-button">No</button>
+            <button id="confirmDeleteButton" class="confirm-button">Yes</button>
         </div>
     </div>
     

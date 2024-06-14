@@ -40,7 +40,6 @@ class UserController extends AppController
                 }
 
                 $userRepository->addUser($fullName, $username, $password, $role, $email);
-
                 echo json_encode(['status' => 'success']);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
@@ -74,9 +73,7 @@ class UserController extends AppController
                 return;
             }
 
-            // Aktualizacja użytkownika w bazie danych
             $userRepository->updateUser($userId, $fullName, $username, $password, $role, $email);
-
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
@@ -101,20 +98,17 @@ class UserController extends AppController
         header('Content-Type: application/json');
         try {
             if ($this->isPost()) {
-                if (isset($_POST['userId'])) {
-                    $userId = (int)$_POST['userId']; // Konwersja ID na integer
-
+                $userId = $_POST['userId'] ?? null;
+                if ($userId) {
                     $userRepository = new UserRepository();
-                    $userRepository->deleteUser($userId);
-
+                    $userRepository->deleteUser((int)$userId);
                     echo json_encode(['status' => 'success']);
-                    return;
                 } else {
                     echo json_encode(['status' => 'error', 'message' => 'No user ID provided']);
-                    return;
                 }
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
             }
-            echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
         } catch (Exception $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
@@ -128,11 +122,6 @@ class UserController extends AppController
                 $userId = (int)$_GET['id'];
                 $userRepository = new UserRepository();
                 $user = $userRepository->getUserById($userId);
-
-                // Logowanie danych użytkownika
-                error_log(print_r($user, true));
-
-                // Konwertowanie obiektu użytkownika na JSON
                 echo json_encode($user);
             }
         } catch (Exception $e) {

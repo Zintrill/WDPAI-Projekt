@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const userRole = parseInt(document.querySelector('meta[name="user-role"]').content, 10);
+    const addDeviceButton = document.getElementById('addDeviceButton');
 
-    if (userRole > 2) { // Operator nie ma dostępu do przycisku dodawania urządzeń
-        document.getElementById('addDeviceButton').style.display = 'none';
+    if (userRole === 3) { // Operator
+        addDeviceButton.style.display = 'none';
     }
 
     fetchDevices();
@@ -10,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let deviceIdToDelete = null;
     let deviceIdToEdit = null;
-    let originalDeviceName = '';
-    let originalDeviceAddress = '';
 
     const deleteModal = document.getElementById('deleteModal');
     const closeModal = document.getElementById('closeModal');
@@ -30,22 +29,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const descriptionInput = document.getElementById('description');
     const submitButton = deviceForm.querySelector('.confirm-button');
-    const addDeviceButton = document.getElementById('addDeviceButton');
-
     const deviceNameError = document.getElementById('deviceNameError');
     const deviceAddressError = document.getElementById('deviceAddressError');
 
-    if (userRole <= 2) { // Technician and Admin can add devices
-        addDeviceButton.addEventListener('click', function() {
-            deviceIdToEdit = null;
-            deviceForm.reset();
-            submitButton.textContent = 'Submit';
-            deviceModal.style.display = 'block';
-            deviceNameError.textContent = '';
-            deviceAddressError.textContent = '';
-            checkSNMPVersion();
-        });
-    }
+    let originalDeviceName = '';
+    let originalDeviceAddress = '';
+
+    addDeviceButton.addEventListener('click', function() {
+        deviceIdToEdit = null;
+        deviceForm.reset();
+        submitButton.textContent = 'Submit';
+        deviceModal.style.display = 'block';
+        deviceNameError.textContent = '';
+        deviceAddressError.textContent = '';
+        checkSNMPVersion();
+    });
 
     closeDeviceModal.addEventListener('click', function() {
         deviceModal.style.display = 'none';
@@ -53,6 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cancelDeviceButton.addEventListener('click', function() {
         deviceModal.style.display = 'none';
+    });
+
+    closeModal.addEventListener('click', function() {
+        deleteModal.style.display = 'none';
+    });
+
+    cancelDeleteButton.addEventListener('click', function() {
+        deleteModal.style.display = 'none';
     });
 
     window.addEventListener('click', function(event) {
@@ -83,17 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function openModal() {
-        deleteModal.style.display = 'block';
-    }
-
-    function closeModalWindow() {
-        deleteModal.style.display = 'none';
-    }
-
-    closeModal.addEventListener('click', closeModalWindow);
-    cancelDeleteButton.addEventListener('click', closeModalWindow);
-
     confirmDeleteButton.addEventListener('click', function() {
         if (deviceIdToDelete) {
             fetch('deleteDevice', {
@@ -107,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.status === 'success') {
                     fetchDevices();
-                    closeModalWindow();
+                    deleteModal.style.display = 'none';
                 } else {
                     console.error('Error:', data.message);
                 }
@@ -133,16 +128,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="device-info-phone">${device.snmp_version}</span>
                         <span class="device-info-phone">${device.username}</span>
                         <span class="device-info-phone">
-                            <span class="hidden-password" data-password="${device.password}">********</span>${userRole <= 2 ? '<i class="eye-icon fa-solid fa-eye-low-vision"></i>' : ''}</span>
+                            <span class="hidden-password" data-password="${device.password}">********</span>${userRole < 3 ? '<i class="eye-icon fa-solid fa-eye-low-vision"></i>' : ''}</span>
                         <span class="device-info-phone">${device.description}</span>
-                        ${userRole <= 2 ? `<button class="editButton" data-id="${device.id}"><i class="fa-solid fa-pencil"></i></button>` : ''}
-                        ${userRole <= 2 ? `<button class="deleteButton" data-id="${device.id}"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        ${userRole < 3 ? `<button class="editButton" data-id="${device.id}"><i class="fa-solid fa-pencil"></i></button>` : ''}
+                        ${userRole < 3 ? `<button class="deleteButton" data-id="${device.id}"><i class="fa-solid fa-trash"></i></button>` : ''}
                     `;
 
                     deviceList.appendChild(deviceItem);
                 });
 
-                if (userRole <= 2) {
+                if (userRole < 3) {
                     document.querySelectorAll('.eye-icon').forEach(icon => {
                         icon.addEventListener('mousedown', function() {
                             const hiddenPassword = this.previousElementSibling;
@@ -181,20 +176,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                     deviceAddressError.textContent = '';
                                     checkSNMPVersion(); // Check SNMP version when editing
                                 })
-                                .catch(error => console.error('Error fetching device by ID:', error));
+                                .catch(error => console.error('Error:', error));
                         });
                     });
 
                     document.querySelectorAll('.deleteButton').forEach(button => {
                         button.addEventListener('click', function() {
                             deviceIdToDelete = this.getAttribute('data-id');
-                            openModal();
+                            deleteModal.style.display = 'block';
                         });
                     });
                 }
             })
             .catch(error => {
-                console.error('Error fetching devices:', error);
+                console.error('Error:', error);
                 alert('An error occurred: ' + error.message);
             });
     }
@@ -212,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     deviceTypeSelect.appendChild(option);
                 });
             })
-            .catch(error => console.error('Error fetching device types:', error));
+            .catch(error => console.error('Error:', error));
 
         // Fetch options for snmpVersion
         fetch('getSnmpVersions')
@@ -223,10 +218,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const option = document.createElement('option');
                     option.value = version.snmp_version_id;
                     option.textContent = version.snmp;
-                    snmpVersionSelect.appendChild(option); // Dodawanie do odpowiedniej listy rozwijanej
+                    snmpVersionSelect.appendChild(option); // Adding to the correct dropdown
                 });
             })
-            .catch(error => console.error('Error fetching SNMP versions:', error));
+            .catch(error => console.error('Error:', error));
     }
 
     function isValidIpAddress(ip) {
@@ -238,19 +233,18 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         const url = deviceIdToEdit ? 'updateDevice' : 'addDevice';
         const formData = new FormData(deviceForm);
-
+    
         if (!isValidIpAddress(deviceAddressInput.value)) {
             deviceAddressError.textContent = 'Invalid IP address format';
             return;
         } else {
             deviceAddressError.textContent = '';
         }
-
+    
         if (deviceIdToEdit) {
-            // Sprawdź, czy nazwa urządzenia została zmieniona
             let checkDeviceNamePromise = Promise.resolve();
             let checkAddressIpPromise = Promise.resolve();
-
+    
             if (originalDeviceName.toLowerCase() !== deviceNameInput.value.toLowerCase()) {
                 checkDeviceNamePromise = fetch(`checkDeviceName?deviceName=${deviceNameInput.value}`)
                     .then(response => response.json())
@@ -263,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
             }
-
+    
             if (originalDeviceAddress !== deviceAddressInput.value) {
                 checkAddressIpPromise = fetch(`checkAddressIp?addressIp=${deviceAddressInput.value}`)
                     .then(response => response.json())
@@ -276,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
             }
-
+    
             Promise.all([checkDeviceNamePromise, checkAddressIpPromise])
                 .then(() => {
                     formData.append('deviceId', deviceIdToEdit);
@@ -292,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         deviceModal.style.display = 'none';
                         deviceForm.reset();
                     } else {
-                        console.error('Error updating device:', data.message);
+                        console.error('Error:', data.message);
                     }
                 })
                 .catch(error => {
@@ -310,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         deviceNameError.textContent = '';
                     }
-
+    
                     return fetch(`checkAddressIp?addressIp=${deviceAddressInput.value}`);
                 })
                 .then(response => response.json())
@@ -320,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         return Promise.reject('Validation failed');
                     } else {
                         deviceAddressError.textContent = '';
-
+    
                         return fetch(url, {
                             method: 'POST',
                             body: formData
@@ -334,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         deviceModal.style.display = 'none';
                         deviceForm.reset();
                     } else {
-                        console.error('Error adding device:', data.message);
+                        console.error('Error:', data.message);
                     }
                 })
                 .catch(error => {

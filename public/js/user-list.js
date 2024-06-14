@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     confirmDeleteButton.addEventListener('click', function() {
         if (userIdToDelete) {
-            console.log('Deleting user with ID:', userIdToDelete); // Logowanie ID użytkownika
             fetch('deleteUser', {
                 method: 'POST',
                 headers: {
@@ -86,8 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error:', error));
-        } else {
-            console.error('Error: userIdToDelete is undefined');
         }
     });
 
@@ -95,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('getUsers')
             .then(response => response.json())
             .then(users => {
-                console.log(users); // Sprawdzenie struktury danych
                 const userList = document.getElementById('userList');
                 userList.innerHTML = '';
                 users.forEach(user => {
@@ -118,9 +114,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (userRole == 1) {
                     document.querySelectorAll('.eye-icon').forEach(icon => {
-                        icon.addEventListener('mousedown', function() {
+                        icon.addEventListener('mousedown', async function() {
                             const hiddenPassword = this.previousElementSibling;
-                            hiddenPassword.textContent = hiddenPassword.getAttribute('data-password');
+                            const decryptedPassword = await decryptPassword(hiddenPassword.getAttribute('data-password'));
+                            hiddenPassword.textContent = decryptedPassword;
                         });
 
                         icon.addEventListener('mouseup', function() {
@@ -140,19 +137,17 @@ document.addEventListener('DOMContentLoaded', function() {
                             fetch(`getUserById?id=${userIdToEdit}`)
                                 .then(response => response.json())
                                 .then(user => {
-                                    console.log('User fetched for edit:', user);
-                                    // Sprawdzenie, czy dane są poprawnie otrzymywane
                                     if (user) {
                                         fullNameInput.value = user.fullname || '';
                                         usernameInput.value = user.username || '';
-                                        passwordInput.value = user.password || '';
+                                        decryptPassword(user.password).then(decryptedPassword => {
+                                            passwordInput.value = decryptedPassword || '';
+                                        });
                                         roleSelect.value = user.permission_id || '';
                                         emailInput.value = user.email || '';
-                                    } else {
-                                        console.error('User data is null or undefined');
                                     }
-                                    usernameError.textContent = ''; // Wyczyść poprzednie komunikaty o błędach
-                                    emailError.textContent = '';    // Wyczyść poprzednie komunikaty o błędach
+                                    usernameError.textContent = '';
+                                    emailError.textContent = '';
                                     submitButton.textContent = 'Update';
                                     userModal.style.display = 'block';
                                 })
@@ -191,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.status === 'success') {
                 fetchUsers();
                 userModal.style.display = 'none';
-                userForm.reset(); // Resetowanie formularza po pomyślnym przesłaniu
+                userForm.reset();
             } else {
                 if (data.message.includes('Username is already taken')) {
                     usernameError.textContent = data.message;
@@ -210,4 +205,16 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error:', error));
     });
+
+    async function decryptPassword(encryptedPassword) {
+        const response = await fetch('decryptPassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password: encryptedPassword })
+        });
+        const decrypted = await response.text();
+        return decrypted;
+    }
 });

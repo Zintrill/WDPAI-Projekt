@@ -34,16 +34,17 @@ input {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     width: 80%;
     border: none;
-    margin: 0.7em 1em; /* zmienione na pojedyncze wystąpienie margin */
+    margin: 0.7em 1em;
     line-height: 2.5em;
     border-radius: 15px;
     color: white;
-    letter-spacing: 1px; /* Dodane jednostki dla letter-spacing */
+    letter-spacing: 1px;
+    text-align: center; /* Wyśrodkowanie wpisywanego tekstu */
+    padding: 0; /* Usuń padding, aby tekst był idealnie wyśrodkowany */
 }
 
 input::placeholder {
     text-align: center;
-    justify-content: center;
     color: white;
 }
 
@@ -56,7 +57,7 @@ input::placeholder {
     margin-top: 1.5em;
     line-height: 2.5em;
     border-radius: 15px;
-    letter-spacing: 1px; /* Dodane jednostki dla letter-spacing */
+    letter-spacing: 1px;
 }
 
 .link-register {
@@ -74,6 +75,10 @@ input::placeholder {
 }
 
 @media only screen and (max-device-width: 430px) {
+
+    .messages{
+        font-size: 40px;
+    }
     .container-login {
         background: linear-gradient(180deg, #000000 0%, #000000 30%, #727272 100%);
         flex-direction: column;

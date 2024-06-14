@@ -12,7 +12,7 @@
 <body>
     <div class="container-dash">
         <nav class="top-nav">
-            <img class="img-log" src="public/img/logo.svg">
+            <img class="img-log" src="public/img/logo.svg" alt="Logo">
             <ul class="nav-menu">
                 <li><a href="dashboard" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
                 <li><a href="snmp" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
@@ -38,7 +38,7 @@
         <div class="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
-            <span class=" bar"></span>
+            <span class="bar"></span>
         </div>
         <div class="page-title"><h1>Users</h1></div>
     </div>
@@ -52,7 +52,7 @@
                 <span class="title">Role</span>
                 <span class="title">E-mail</span>
             </div>
-            <div id="userList"></div> <!-- Lista użytkowników będzie tutaj -->
+            <div id="userList"></div>
         </div>
     </div>
     <div id="userModal" class="add-modal">
@@ -87,8 +87,8 @@
                     <span id="emailError" class="error-message"></span>
                 </div>
                 <div class="form-group form-buttons">
-                    <button type="submit" class="confirm-button">Submit</button>
                     <button type="button" class="cancel-button" id="cancelUserButton">Cancel</button>
+                    <button type="submit" class="confirm-button">Submit</button>
                 </div>
             </form>
         </div>
@@ -98,8 +98,8 @@
         <div class="modal-content">
             <span class="close-button" id="closeModal">&times;</span>
             <p>Are you sure you want to delete this user?</p>
-            <button id="confirmDeleteButton" class="confirm-button">Yes</button>
             <button id="cancelDeleteButton" class="cancel-button">No</button>
+            <button id="confirmDeleteButton" class="confirm-button">Yes</button>
         </div>
     </div>
     <script src="public/js/menu.js"></script>

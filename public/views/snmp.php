@@ -11,7 +11,7 @@
 <body>
     <div class="container-dash">
         <nav class="top-nav">
-            <img class="img-log" src="public/img/logo.svg">
+            <img class="img-log" src="public/img/logo.svg" alt="Logo">
             <ul class="nav-menu">
                 <li><a href="dashboard" class="nav-link button"><i class="fa-solid fa-table"></i> Dashboard</a></li>
                 <li><a href="snmp" class="nav-link button"><i class="fa-solid fa-desktop"></i> SNMP Overview</a></li>
@@ -19,7 +19,6 @@
                 <li><a href="users" class="nav-link button"><i class="fa-solid fa-users"></i> Users</a></li>
             </ul>
             <span class="nav-text"><?php echo $username; ?></span>
-            
             <nav class="user-options">
                 <div class="options">
                     <button id="userButton"><i class="fa-solid fa-circle-user"></i></button>
@@ -41,9 +40,6 @@
             <span class="bar"></span>
         </div>
         <div class="page-title"><h1>SNMP Overview</h1></div>
-        <script src="public/js/menu.js"></script>
-        <script src="public/js/options.js"></script>
-        <script src="public/js/overview-snmp.js"></script>
     </div>
     <div class="container-snmp-devices">
         <div class="snmp-management">
@@ -72,16 +68,16 @@
                         <i class="fas fa-sort" data-column="ip_address"></i>
                     </span>
                 </div>
-                <div class="segment">
-                    <span class="title" data-sort="asc">
+                <div class="segment-phone">
+                    <span class="title-phone" data-sort="asc">
                         Address MAC 
                         <i class="fas fa-sort" data-column="mac_address"></i>
                     </span>
                 </div>
-                <div class="segment">
-                    <span class="title" data-sort="asc">UP Time <i class="fas fa-sort" data-column="uptime"></i></span>
+                <div class="segment-phone">
+                    <span class="title-phone" data-sort="asc">UP Time <i class="fas fa-sort" data-column="uptime"></i></span>
                 </div>
-                <div class="segment">
+                <div class="segment-phone">
                     <span class="title-phone">Actions</span>
                 </div>
                 <div class="segment">
@@ -100,22 +96,24 @@
                         <option value="">All</option>
                         <option value="Switch">Switch</option>
                         <option value="Router">Router</option>
-                        <!-- Dodaj więcej opcji według potrzeb -->
+                        <option value="PC">PC</option>
+                        <option value="Phone">Phone</option>
+                        <option value="Printer">Printer</option>
+                        <option value="TV">TV</option>
                     </select>
                 </div>
                 <div class="segment">
                     <input type="text" class="search-input" data-column="ip_address" placeholder="Search Address IP...">
                 </div>
                 <div class="segment">
-                    <input type="text" class="search-input" data-column="mac_address" placeholder="Search Address MAC...">
+                    <input type="text" class="search-input-phone" data-column="mac_address" placeholder="Search Address MAC...">
                 </div>
             </div>
-            
-            <div id="DeviceList" class="device-list">
-                </div>
-            </div>
-           
+            <div id="DeviceList" class="device-list"></div>
         </div>
     </div>
+    <script src="public/js/menu.js"></script>
+    <script src="public/js/options.js"></script>
+    <script src="public/js/overview-snmp.js"></script>
 </body>
 </html>

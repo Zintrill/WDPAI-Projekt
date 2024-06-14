@@ -7,15 +7,28 @@ class DeviceRepository extends Repository
     public function getAllDevices()
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT d.id, d.device_name, t.type, d.address_ip, s.snmp as snmp_version, ds.status, ds.mac_address, d.username, d.password, d.description
+            SELECT d.id, d.device_name, d.type_id, d.address_ip, d.snmp_version_id, t.type, ds.status, ds.mac_address, d.username, d.password, d.description
             FROM public.device d
             JOIN public.types t ON d.type_id = t.type_id
-            JOIN public.snmp_version s ON d.snmp_version_id = s.snmp_version_id
             LEFT JOIN public.device_status ds ON d.id = ds.device_id
         ');
         $stmt->execute();
-    
+        
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSnmpVersionByDeviceId($deviceId)
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT s.snmp as snmp_version
+            FROM public.device d
+            JOIN public.snmp_version s ON d.snmp_version_id = s.snmp_version_id
+            WHERE d.id = :id
+        ');
+        $stmt->bindParam(':id', $deviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getDeviceById($deviceId)
@@ -29,13 +42,7 @@ class DeviceRepository extends Repository
         $stmt->bindParam(':id', $deviceId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $device = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$device) {
-            return null;
-        }
-
-        return $device;
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
     public function getDeviceTypes(): array
@@ -46,9 +53,7 @@ class DeviceRepository extends Repository
         ');
         $stmt->execute();
 
-        $types = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $types;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getSnmpVersions(): array
@@ -59,33 +64,29 @@ class DeviceRepository extends Repository
         ');
         $stmt->execute();
 
-        $versions = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $versions;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function addDevice(string $deviceName, int $typeId, string $addressIp, int $snmpVersionId, string $userName, string $password, ?string $description)
-{
-    $stmt = $this->database->connect()->prepare('
-        INSERT INTO public.device (device_name, type_id, address_ip, snmp_version_id, username, password, description)
-        VALUES (:device_name, :type_id, :address_ip, :snmp_version_id, :username, :password, :description)
-        RETURNING id
-    ');
-    $stmt->bindParam(':device_name', $deviceName, PDO::PARAM_STR);
-    $stmt->bindParam(':type_id', $typeId, PDO::PARAM_INT);
-    $stmt->bindParam(':address_ip', $addressIp, PDO::PARAM_STR);
-    $stmt->bindParam(':snmp_version_id', $snmpVersionId, PDO::PARAM_INT);
-    $stmt->bindParam(':username', $userName, PDO::PARAM_STR);
-    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-    $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+    {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO public.device (device_name, type_id, address_ip, snmp_version_id, username, password, description)
+            VALUES (:device_name, :type_id, :address_ip, :snmp_version_id, :username, :password, :description)
+            RETURNING id
+        ');
+        $stmt->bindParam(':device_name', $deviceName, PDO::PARAM_STR);
+        $stmt->bindParam(':type_id', $typeId, PDO::PARAM_INT);
+        $stmt->bindParam(':address_ip', $addressIp, PDO::PARAM_STR);
+        $stmt->bindParam(':snmp_version_id', $snmpVersionId, PDO::PARAM_INT);
+        $stmt->bindParam(':username', $userName, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':description', $description, PDO::PARAM_STR);
 
-    $stmt->execute();
-    $deviceId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
+        $stmt->execute();
+        $deviceId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
-    // Initialize device status as 'waiting'
-    $this->initializeDeviceStatus($deviceId);
-}
-
+        $this->initializeDeviceStatus($deviceId);
+    }
 
     public function updateDevice(int $deviceId, string $deviceName, int $typeId, string $addressIp, int $snmpVersionId, string $userName, string $password, ?string $description)
     {
@@ -114,9 +115,8 @@ class DeviceRepository extends Repository
         $stmt->bindParam(':id', $deviceId, PDO::PARAM_INT);
         $stmt->execute();
     }
-    
 
-    public function isDeviceNameTaken($deviceName)
+    public function isDeviceNameTaken($deviceName): bool
     {
         $stmt = $this->database->connect()->prepare('
             SELECT COUNT(*) FROM public.device WHERE LOWER(device_name) = LOWER(:device_name)
@@ -135,28 +135,55 @@ class DeviceRepository extends Repository
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
-    public function initializeDeviceStatus(int $deviceId, string $status = 'waiting', string $macAddress = 'N/A')
-{
-    $stmt = $this->database->connect()->prepare('
-        INSERT INTO public.device_status (device_id, status, mac_address)
-        VALUES (:device_id, :status, :mac_address)
-    ');
-    $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
-    $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-    $stmt->bindParam(':mac_address', $macAddress, PDO::PARAM_STR);
-    $stmt->execute();
-}
 
-public function updateDeviceStatus(int $deviceId, string $status, string $macAddress)
-{
-    $stmt = $this->database->connect()->prepare('
-        UPDATE public.device_status
-        SET status = :status, mac_address = :mac_address
-        WHERE device_id = :device_id
-    ');
-    $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-    $stmt->bindParam(':mac_address', $macAddress, PDO::PARAM_STR);
-    $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
-    $stmt->execute();
-}
+    public function initializeDeviceStatus(int $deviceId, string $status = 'Waiting', string $macAddress = 'N/A')
+    {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO public.device_status (device_id, status, mac_address)
+            VALUES (:device_id, :status, :mac_address)
+        ');
+        $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':mac_address', $macAddress, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    public function updateDeviceStatus(int $deviceId, string $status, string $macAddress)
+    {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE public.device_status
+            SET status = :status, mac_address = :mac_address
+            WHERE device_id = :device_id
+        ');
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':mac_address', $macAddress, PDO::PARAM_STR);
+        $stmt->bindParam(':device_id', $deviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function getDeviceStatuses(): array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT ds.status, COUNT(*) as count
+            FROM public.device_status ds
+            JOIN public.device d ON ds.device_id = d.id
+            GROUP BY ds.status
+        ');
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDeviceStatusesByType(): array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT t.type, ds.status, COUNT(*) as count
+            FROM public.device d
+            LEFT JOIN public.types t ON d.type_id = t.type_id
+            LEFT JOIN public.device_status ds ON d.id = ds.device_id
+            GROUP BY t.type, ds.status
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

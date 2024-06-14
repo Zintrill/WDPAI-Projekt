@@ -15,23 +15,22 @@
     padding: 8px 16px;
     font-size: 25px;
     cursor: pointer;
-    margin-bottom: 20px; /* Dodany większy odstęp */
-    border-radius: 10px; /* Zaokrąglone rogi */
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
 .action-button:hover {
-    background-color: rgb(161, 161, 161); /* Kolor podświetlenia po najechaniu */
+    background-color: rgb(161, 161, 161);
 }
 
-/* Ustawienie grid layout dla nagłówka tabeli i elementów urządzeń oraz użytkowników */
+/* Ustawienie grid layout dla nagłówka tabeli i elementów użytkowników */
 .table-header, .user-item {
     display: grid;
-    grid-template-columns: 20% 10% 7% 10% 20%; /* Definiuje szerokości kolumn */
+    grid-template-columns: 20% 10% 10% 10% 20%;
     gap: 80px;
     align-items: center;
     justify-content: center;
     padding: 8px;
-
 }
 
 /* Styl dla nagłówka tabeli */
@@ -51,30 +50,35 @@
     font-weight: bold;
     padding: 8px;
     position: relative;
-    margin-bottom: 1vh
+    margin-bottom: 1vh;
 }
 
 /* Styl dla przycisków akcji */
-.editButton, .deleteButton {
+.editButton, .deleteButton, .eye-icon {
     background-color: transparent;
     border: none;
     cursor: pointer;
     font-size: 18px;
-    color: #555; /* Szary kolor */
+    color: #555;
+    position: absolute;
 }
 
 .editButton {
-    position: absolute;
-    right: 40px; /* Odsunięcie od prawej krawędzi */
+    right: 40px;
 }
 
 .deleteButton {
-    position: absolute;
-    right: 10px; /* Odsunięcie od prawej krawędzi */
+    right: 10px;
 }
 
-.editButton:hover, .deleteButton:hover {
+.editButton:hover, .deleteButton:hover, .eye-icon:hover {
     color: red;
+}
+
+.eye-icon {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 /* Upewnienie się, że kolumny są wyśrodkowane */
@@ -82,49 +86,31 @@
     text-align: center;
 }
 
-/* Styl dla przycisku "eye" */
-.eye-icon {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: #555; /* Szary kolor */
-    position: absolute;
-    right: 0; /* Dodane do prawidłowego umiejscowienia ikony */
-    top: 50%; /* Dodane do prawidłowego umiejscowienia ikony */
-    transform: translateY(-50%); /* Centrowanie w pionie */
-}
-
-.eye-icon:hover {
-    color: red;
-}
-
 .user-info-phone {
-    position: relative; /* Dodane, aby ikona była prawidłowo umiejscowiona */
-    display: flex; /* Dodane, aby umożliwić łatwe pozycjonowanie elementów wewnątrz */
-    align-items: center; /* Dodane, aby wyrównać elementy wewnątrz w pionie */
+    position: relative;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-
-.add-modal {
-    display: none; /* Ukryj domyślnie */
+.add-modal, .delete-modal {
+    display: none;
     position: fixed;
     z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
-    height: 110%;
+    height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Czarny z przezroczystością */
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
     background-color: white;
     margin: 15% auto;
-    padding: 20px;
+    padding: 2em;
     border: 1px solid #888;
-    width: 15vw;
+    width: 25vw;
     border-radius: 10px;
     text-align: center;
 }
@@ -136,8 +122,7 @@
     font-weight: bold;
 }
 
-.close-button:hover,
-.close-button:focus {
+.close-button:hover, .close-button:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -155,7 +140,7 @@
 .user-form .form-group input,
 .user-form .form-group select {
     width: 100%;
-    box-sizing: border-box; /* Upewnij się, że padding i border są wliczane w szerokość */
+    box-sizing: border-box;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -169,7 +154,7 @@
 }
 
 .form-buttons .confirm-button, .form-buttons .cancel-button {
-    display: inline-block; /* Wyświetl przyciski w jednej linii */
+    display: inline-block;
     margin: 10px;
     padding: 10px 20px;
     font-size: 16px;
@@ -178,67 +163,19 @@
 }
 
 .confirm-button {
-    background-color: #4CAF50; /* Kolor potwierdzenia (zielony) */
+    background-color: #4CAF50;
     color: white;
     border: none;
-}
-
-.cancel-button {
-    background-color: #f44336; /* Kolor anulowania (czerwony) */
-    color: white;
-    border: none;
-}
-
-.confirm-button:hover, .cancel-button:hover {
-    opacity: 0.8;
-}
-
-
-/* Styl dla okienka modalnego */
-.delete-modal {
-    display: none; /* Ukryj domyślnie */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Czarny z przezroczystością */
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.confirm-button, .cancel-button {
-    margin: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
     border-radius: 5px;
-    cursor: pointer;
-}
-
-.confirm-button {
-    background-color: #d9534f; /* Kolor potwierdzenia (czerwony) */
-    color: white;
-    border: none;
+    margin-left: 1em;
 }
 
 .cancel-button {
-    background-color: #5bc0de; /* Kolor anulowania (niebieski) */
+    background-color: #f44336;
     color: white;
     border: none;
+    border-radius: 5px;
+    margin-right: 1em;
 }
 
 .confirm-button:hover, .cancel-button:hover {
@@ -252,59 +189,62 @@
     margin-top: 5px;
 }
 
-
 @media only screen and (max-width: 820px) {
     .container-users {
-        width: 90%; /* Szerokość kontenera dostosowana do mniejszych ekranów */
+        width: 90%;
         font-size: small;
     }
 
-    .user-info-phone {
-        display: none;
-    }
-
-    .title-phone{
+    .user-info-phone, .title-phone, .ellipsisButton {
         display: none;
     }
 
     .action-button {
-        padding: 12px 24px; /* Zwiększona wielkość przycisku */
-        font-size: 20px; /* Zmniejszona wielkość tekstu przycisku */
+        padding: 12px 24px;
+        font-size: 20px;
     }
 
     .title-phone, .title, .user-info {
-        width: auto; /* Ustawienie szerokości na automatyczną dla wersji mobilnej */
-        text-align: center; /* Wyśrodkowanie tekstu */
-        word-wrap: break-word; /* Dodanie wrapa dla długiego tekstu */
+        width: auto;
+        text-align: center;
+        word-wrap: break-word;
     }
 
     .user-info {
-        flex: 1; /* Ustawienie flex na 1, aby kolumny zajmowały dostępne miejsce */
+        flex: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .table-header {
         padding-right: 8em;
     }
 
-   .user-item,.table-header {
-        display: grid;
-        grid-template-columns: 20% 25% 35%; /* Definiuje szerokości kolumn */
-        gap: 8px;
+    .user-item, .table-header {
+        grid-template-columns: 20% 25% 30%;
+        gap: 10px;
         align-items: center;
         justify-content: start;
         padding: 8px;
+        position: inherit;
     }
 
-    .modal-content{
+    .modal-content {
         width: 60vw;
         font-size: 20px;
-        justify-content: center;
         margin: 50% auto;
     }
 
+    .deleteButton {
+        right: 6vw;
+    }
 
+    .editButton {
+        right: 14vw;
+    }
 
+    .delete-modal {
+        top: 13vh;
+    }
 }
-
-
-

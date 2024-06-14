@@ -3,45 +3,44 @@ body {
     height: 100vh;
     font-family: Arial;
     background: linear-gradient(180deg, #000000 0%, #000000 40%, #727272 100%);
-    margin: 0%;
+    margin: 0;
 }
 
 ul.options-menu {
     list-style: none;
-    display: none; /* ukryj listę początkowo */
+    display: none;
     position: absolute;
     top: 7vh;
-    right: 0;/* szerokość listy */
+    right: 0;
     padding: 0.3em;
     border-radius: 15px;
 }
 
 .options-menu.active {
-    display: flex; /* wyświetlaj jako flexbox */
-    flex-direction: column; /* ustawianie elementów w kolumnie */
-    align-items: flex-end; /* wyrównanie do prawej strony */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .option-button {
-    display: flex; /* wyświetlaj jako flexbox */
-    align-items: center; /* wyrównaj do środka pionowo */
-    padding: 5px 15px; /* dodaj padding na boki, aby dodać przestrzeń dla dymka */
-    color: white; /* zmień kolor tekstu */
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    color: white;
     text-decoration: none;
-    font-size: 16px; /* zmniejsz czcionkę */
-    background-color: rgba(255, 255, 255, 0.1); /* dodaj dymek jako tło */
-    border-radius: 10px; /* zaokrąglij rogi */
-    margin-bottom: 10px; /* odstęp między przyciskami */
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .option-button i {
-    margin-right: 5px; /* odstęp między ikoną a tekstem */
+    margin-right: 5px;
 }
 
 .option-button:hover {
-    background-color: #999; /* zmień kolor tła po najechaniu */
+    background-color: #999;
 }
-
 
 .fa-circle-user {
     font-size: 60px;
@@ -73,24 +72,30 @@ ul {
     font-size: 25px;
     text-transform: uppercase;
     margin: 0;
-    position: absolute; /* Dodane */
-    top: 7em; /* Dodane */
-    left: 50%; /* Dodane */
-    transform: translate(-50%, -50%); /* Dodane */
+    position: absolute;
+    top: 7em;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-
-.nav-text{
+.nav-text {
     padding: 1vw 1vh;
-    color:white;
+    color: white;
     font-size: 25px;
     text-align: center;
 }
 
-button {
+button, .button {
     border: none;
     background-color: transparent;
     color: white;
+    cursor: pointer;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+.button:hover {
+    color: rgb(161, 161, 161);
 }
 
 .options {
@@ -107,85 +112,56 @@ button {
     display: block;
     width: 1.2em;
     height: 0.1em;
-    margin: 10px;
-    margin-left: 0.4em;
-    -webkit-transition: all 0.3s ease-in-out;
+    margin: 10px 0.4em;
     transition: all 0.3s ease-in-out;
     background-color: white;
 }
+
 .user-list {
     display: none;
 }
 
-.button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-size: 25px;
-    text-decoration: none;
-    color: white;
-}
-
-.button:hover {
-    color: rgb(161, 161, 161); /* Podświetlenie tekstu na czerwono po najechaniu kursorem */
-}
-
-
 @media only screen and (max-device-width: 820px) {
-    ul.options-menu {
-    top: 7vh;
-    }
-    ul{
+    ul {
         display: none;
     }
-    .img-log{
+    .img-log {
         margin: 0;
         height: 6.5vh;
     }
-    .top-nav{
+    .top-nav {
         padding: 0.3em;
         align-items: normal;
     }
-    .nav-text{
+    .nav-text {
         display: none;
     }
-    body{
+    body {
         font-size: 36px;
-    }
-    .fa-circle-user {
-        font-size: 60px;
     }
     .hamburger {
         display: block;
         margin-left: 0.3em;
     }
-
-    .page-title{
+    .page-title {
         font-size: 15px;
-        position: absolute; /* Dodane */
-        top: 8em; /* Dodane */
-        left: 52%; /* Dodane */
-        transform: translate(-50%, -50%); /* Dodane */
-        text-align: center; /* Centrowanie tekstu */
-        word-wrap: break-word; /* Zawijanie tekstu */
+        top: 8em;
+        left: 52%;
+        text-align: center;
+        word-wrap: break-word;
     }
-    
     .hamburger.active .bar:nth-child(1) {
         transform: translateY(13px) rotate(45deg);
     }
-    
     .hamburger.active .bar:nth-child(2) {
         opacity: 0;
     }
-    
     .hamburger.active .bar:nth-child(3) {
         transform: translateY(-13px) rotate(-45deg);
     }
-
     .nav-menu {
         display: none;
     }
-
     .nav-menu.active {
         display: flex;
         flex-direction: column;
@@ -197,15 +173,9 @@ button {
         border-radius: 15px;
         background-color: black;
     }
-
     .nav-menu .nav-link {
         width: auto;
         height: auto;
         margin: 10px 0;
     }
-
-    .nav-text {
-        display: none;
-    }
-    
 }

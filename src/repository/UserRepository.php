@@ -1,12 +1,28 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 require_once 'Repository.php';
 require_once __DIR__.'/../models/User.php';
+require_once __DIR__.'/../models/Encryption.php';
 
 class UserRepository extends Repository
 {
+    public function addUser(string $fullName, string $username, string $password, string $role, string $email)
+    {
+        $encryptedPassword = encryptPassword($password);
+
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO public.users (fullname, username, password, permission_id, email)
+            VALUES (:fullname, :username, :password, :permission_id, :email)
+        ');
+        $stmt->bindParam(':fullname', $fullName, PDO::PARAM_STR);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $encryptedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':permission_id', $role, PDO::PARAM_INT);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
+
     public function getUser(string $username): ?User
     {
         $stmt = $this->database->connect()->prepare('
@@ -21,6 +37,8 @@ class UserRepository extends Repository
             return null;
         }
 
+        $user['password'] = decryptPassword($user['password']);
+
         return new User(
             $user['fullname'],
             $user['username'],
@@ -28,33 +46,6 @@ class UserRepository extends Repository
             $user['permission_id'],
             $user['email']
         );
-    }
-
-    public function addUser(string $fullName, string $username, string $password, string $role, string $email)
-    {
-        $roleMap = [
-            '1' => 1,
-            '2' => 2,
-            '3' => 3
-        ];
-
-        $permissionId = $roleMap[$role] ?? null;
-
-        if ($permissionId === null) {
-            throw new Exception('Invalid role');
-        }
-
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO public.users (fullname, username, password, permission_id, email)
-            VALUES (:fullname, :username, :password, :permission_id, :email)
-        ');
-        $stmt->bindParam(':fullname', $fullName, PDO::PARAM_STR);
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->bindParam(':permission_id', $permissionId, PDO::PARAM_INT);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-
-        $stmt->execute();
     }
 
     public function getAllUsers(): array
@@ -66,9 +57,7 @@ class UserRepository extends Repository
         ');
         $stmt->execute();
 
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $users;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function deleteUser(int $userId)
@@ -89,7 +78,7 @@ class UserRepository extends Repository
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
-    
+
     public function isEmailTaken(string $email): bool
     {
         $stmt = $this->database->connect()->prepare('
@@ -102,13 +91,7 @@ class UserRepository extends Repository
 
     public function updateUser(int $userId, string $fullName, string $username, string $password, string $role, string $email)
     {
-        $roleMap = [
-            '1' => 1,
-            '2' => 2,
-            '3' => 3
-        ];
-
-        $permissionId = $roleMap[$role];
+        $encryptedPassword = encryptPassword($password);
 
         $stmt = $this->database->connect()->prepare('
             UPDATE public.users 
@@ -117,11 +100,10 @@ class UserRepository extends Repository
         ');
         $stmt->bindParam(':fullname', $fullName, PDO::PARAM_STR);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->bindParam(':permission_id', $permissionId, PDO::PARAM_INT);
+        $stmt->bindParam(':password', $encryptedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':permission_id', $role, PDO::PARAM_INT);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
-
         $stmt->execute();
     }
 
@@ -137,11 +119,7 @@ class UserRepository extends Repository
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user == false) {
-            return null;
-        }
-
-        return $user;
+        return $user ?: null;
     }
 
     public function isUsernameTakenByAnother(string $username, int $userId): bool

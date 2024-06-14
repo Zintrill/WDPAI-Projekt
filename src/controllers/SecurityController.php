@@ -20,15 +20,10 @@ class SecurityController extends AppController
                 return $this->render('login', ['messages' => ['User not exists!']]);
             }
 
-            if ($user->getUsername() !== $username) {
-                return $this->render('login', ['messages' => ['User with this username not exist!']]);
-            }
-
             if ($user->getPassword() !== $password) {
                 return $this->render('login', ['messages' => ['Wrong password!']]);
             }
 
-            // Przechowywanie danych użytkownika w sesji
             $_SESSION['user_id'] = $user->getUsername();
             $_SESSION['full_name'] = $user->getFullName();
             $_SESSION['user_role'] = $user->getPermissionId();
@@ -44,5 +39,13 @@ class SecurityController extends AppController
         session_unset();
         session_destroy();
         $this->render('login', ['messages' => ['You have been logged out!']]);
+    }
+    
+    public function decryptPassword()
+    {
+        $input = json_decode(file_get_contents('php://input'), true);
+        $encryptedPassword = $input['password'];
+        $decryptedPassword = decryptPassword($encryptedPassword);
+        echo $decryptedPassword;
     }
 }
